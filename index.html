@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paws &amp; Tails — Online Pet Store, Trivandrum</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -404,15 +405,31 @@ footer{background:#111009;padding:64px 64px 0;}
 .foot-logo{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;color:#fff;letter-spacing:-.3px;margin-bottom:10px;}
 .foot-logo em{font-style:italic;color:var(--blush);}
 .foot-tagline{font-size:12px;color:#3e3c3a;line-height:1.8;max-width:210px;font-weight:300;margin-bottom:24px;}
-.foot-social{display:flex;gap:8px;}
-.foot-soc{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;text-decoration:none;}
-.foot-soc:hover{background:var(--blush);border-color:var(--blush);transform:translateY(-2px);}
+.foot-social {
+  display: flex;
+  gap: 15px;
+}
+
+.foot-soc {
+  font-size: 20px;
+  color: #555;
+  transition: 0.3s;
+}
+
+.foot-soc:hover {
+  color: #fff;
+  transform: scale(1.2);
+}
 .foot-col h4{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#383532;margin-bottom:18px;}
 .foot-col a{display:block;font-size:12.5px;color:#555250;padding:5px 0;transition:color .2s;text-decoration:none;font-weight:300;}
 .foot-col a:hover{color:#fff;}
 .foot-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:18px 0 28px;}
 .foot-copy{font-size:11px;color:#383532;}
 .foot-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:5px 12px;font-size:10px;color:#444;letter-spacing:.5px;}
+
+@media(max-width:380px){
+  .foot-main{grid-template-columns:1fr;}
+}
 
 /* ══ TOAST ══ */
 #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);z-index:900;background:var(--ink);color:var(--white);padding:11px 20px;border-radius:24px;font-size:12px;font-weight:500;opacity:0;pointer-events:none;transition:all .3s;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.18);}
@@ -432,9 +449,9 @@ footer{background:#111009;padding:64px 64px 0;}
   .nav-logo{margin-right:auto;}
   .sec{padding:52px 24px;}
   .stats{padding:40px 24px;}
-  footer{padding:44px 24px 0;}
-  .foot-main{grid-template-columns:1fr 1fr;gap:32px;padding-bottom:36px;}
-  .foot-bottom{padding:16px 0 22px;}
+  footer{padding:40px 20px 0;}
+  .foot-main{grid-template-columns:1fr 1fr;gap:28px 20px;padding-bottom:32px;}
+  .foot-bottom{padding:14px 0 20px;flex-direction:column;align-items:flex-start;gap:6px;}
   .promo{margin:0 24px 44px;grid-template-columns:1fr;}
   #popup-box{grid-template-columns:1fr;}
   .popup-img-col{min-height:220px;}
@@ -461,7 +478,9 @@ footer{background:#111009;padding:64px 64px 0;}
   .promo{margin:0 16px 36px;}
   .cright-top{grid-template-columns:1fr;}
   .cright-col:first-child{border-right:none;border-bottom:1px solid var(--bdr);}
-  .foot-main{grid-template-columns:1fr;}
+  .foot-main{grid-template-columns:1fr 1fr;gap:20px 16px;}
+  .foot-logo{font-size:20px;}
+  .foot-tagline{font-size:11px;}
 }
 </style>
 </head>
@@ -867,16 +886,12 @@ footer{background:#111009;padding:64px 64px 0;}
           <div class="cright-col">
             <h4>Follow Us</h4>
             <a href="https://instagram.com" target="_blank" class="soc-link"><span class="soc-dot" style="background:#e1306c"></span>Instagram</a>
-            <a href="https://facebook.com"  target="_blank" class="soc-link"><span class="soc-dot" style="background:#1877f2"></span>Facebook</a>
+           
             <a href="https://wa.me/914712345678" target="_blank" class="soc-link"><span class="soc-dot" style="background:#25d366"></span>WhatsApp</a>
             <a href="https://youtube.com"   target="_blank" class="soc-link"><span class="soc-dot" style="background:#ff0000"></span>YouTube</a>
           </div>
         </div>
-        <div class="cbrand">
-          <div class="cbrand-icon">🐾</div>
-          <div class="cbrand-name">Paws <em>&amp;</em> Tails</div>
-          <div class="cbrand-sub">Online Pet Store · Thiruvananthapuram, Kerala</div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -888,13 +903,24 @@ footer{background:#111009;padding:64px 64px 0;}
     <!-- Brand col -->
     <div>
       <div class="foot-logo">Paws <em>&amp;</em> Tails</div>
-      <p class="foot-tagline">Premium pet food &amp; accessories delivered to your door in Thiruvananthapuram. Vet-approved, Kerala-sourced.</p>
+      <p class="foot-tagline">Pet food &amp; accessories delivered to your door in Thiruvananthapuram. Vet-approved &amp; Kerala-sourced.</p>
       <div class="foot-social">
-        <a class="foot-soc" href="https://instagram.com" target="_blank" title="Instagram">📷</a>
-        <a class="foot-soc" href="https://facebook.com"  target="_blank" title="Facebook">👍</a>
-        <a class="foot-soc" href="https://wa.me/914712345678" target="_blank" title="WhatsApp">💬</a>
-        <a class="foot-soc" href="https://youtube.com"   target="_blank" title="YouTube">▶️</a>
-      </div>
+  <a class="foot-soc" href="https://instagram.com" target="_blank" title="Instagram">
+    <i class="fa-brands fa-instagram"></i>
+  </a>
+
+  <a class="foot-soc" href="https://facebook.com" target="_blank" title="Facebook">
+    <i class="fa-brands fa-facebook-f"></i>
+  </a>
+
+  <a class="foot-soc" href="https://wa.me/914712345678" target="_blank" title="WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <a class="foot-soc" href="https://youtube.com" target="_blank" title="YouTube">
+    <i class="fa-brands fa-youtube"></i>
+  </a>
+</div>
     </div>
     <!-- Shop col -->
     <div class="foot-col">
@@ -926,7 +952,7 @@ footer{background:#111009;padding:64px 64px 0;}
   </div>
   <div class="foot-bottom">
     <span class="foot-copy">© 2025 Paws &amp; Tails · Thiruvananthapuram, Kerala · All rights reserved</span>
-    <span class="foot-badge">🐾 Online Pet Store · India</span>
+   
   </div>
 </footer>
 
@@ -936,24 +962,34 @@ footer{background:#111009;padding:64px 64px 0;}
 <script>
 /* ══ INTRO ══ */
 (function(){
-  const intro=document.getElementById('intro');
-  const video=document.getElementById('intro-video');
-  const site=document.getElementById('site');
+  const intro = document.getElementById('intro');
+  const video = document.getElementById('intro-video');
+  const site = document.getElementById('site');
+
   function finishIntro(){
-    if(video)video.pause();
+    if(video) video.pause();
     intro.classList.add('fade-out');
     site.classList.add('visible');
-    setTimeout(()=>{intro.style.display='none';},700);
+    setTimeout(()=>{ intro.style.display='none'; }, 700);
   }
-  window.finishIntro=finishIntro;
+
+  window.finishIntro = finishIntro;
+
   if(video){
-    video.addEventListener('timeupdate',()=>{if(video.currentTime>=5)finishIntro();});
-    video.addEventListener('ended',finishIntro);
-    video.addEventListener('error',()=>setTimeout(finishIntro,500));
-    setTimeout(finishIntro,6000);
+    // ⏱ finish at 2 seconds
+    video.addEventListener('timeupdate', () => {
+      if(video.currentTime >= 2) finishIntro();
+    });
+
+    video.addEventListener('ended', finishIntro);
+    video.addEventListener('error', () => setTimeout(finishIntro, 200));
+
+    // ⏱ fallback timeout also 2 sec
+    setTimeout(finishIntro, 1000);
+
     video.play().catch(()=>{});
   } else {
-    setTimeout(finishIntro,300);
+    setTimeout(finishIntro, 200);
   }
 })();
 
@@ -972,20 +1008,39 @@ const FEATS={
 };
 
 const PRODS=[
-  {id:1,  name:'Pedigree Puppy',          animal:'dog',  type:'food', em:'🦴', price:2150, badge:'best', bl:'Best Seller', desc:'Large breed dry food, 15kg. Complete nutrition for puppies.',        imgFile:'images/cat1.jpg'},
-  {id:2,  name:'Pedigree Wet Food Pouch', animal:'dog',  type:'food', em:'🥩', price:85,   badge:'sub',  bl:'Subscribe',   desc:'Chicken & liver jelly, 12-pack. Real meat in every pouch.',          imgFile:'images/pedigree-wet.jpg'},
-  {id:3,  name:'Drools Puppy Starter',    animal:'dog',  type:'food', em:'🌾', price:650,  badge:'new',  bl:'New',         desc:'Puppy starter food, 3kg. Enriched with DHA for brain development.', imgFile:'images/drools-puppy.jpg'},
-  {id:4,  name:'Rope Tug Toy Set',        animal:'dog',  type:'toy',  em:'🎾', price:349,  badge:'new',  bl:'New',         desc:'Durable cotton rope, set of 3. Great for teeth and bonding.',        imgFile:'images/rope-toy.jpg'},
-  {id:5,  name:'Whiskas Dry Cat Food',    animal:'cat',  type:'food', em:'🐠', price:750,  badge:'best', bl:'Best Seller', desc:'Ocean fish flavour, 1.2kg. Balanced diet for indoor cats.',           imgFile:'images/whiskas.jpg'},
-  {id:6,  name:'Felix Wet Cat Food',      animal:'cat',  type:'food', em:'🥣', price:60,   badge:'sub',  bl:'Subscribe',   desc:'Jelly sachets, 12-pack. Irresistible taste cats love.',               imgFile:'images/felix.jpg'},
-  {id:7,  name:'Me-O Tuna Pouches',       animal:'cat',  type:'food', em:'🐟', price:45,   badge:'new',  bl:'New',         desc:'Tuna in gravy, 80g pouch. Premium tuna for a shiny coat.',            imgFile:'images/meo.jpg'},
-  {id:8,  name:'Cat Feather Wand',        animal:'cat',  type:'toy',  em:'🪶', price:199,  badge:'new',  bl:'New',         desc:'Interactive feather toy. Encourages healthy play and exercise.',      imgFile:'images/feather-wand.jpg'},
-  {id:9,  name:'Taiyo Parrot Mix',        animal:'bird', type:'food', em:'🌻', price:320,  badge:'best', bl:'Best Seller', desc:'Premium seed mix, 500g. 8 seed varieties for complete nutrition.',    imgFile:'images/taiyo.jpg'},
-  {id:10, name:'Budgie Millet Spray',     animal:'bird', type:'food', em:'🌱', price:80,   badge:'sub',  bl:'Subscribe',   desc:'Natural millet sprays, 5-pack. Favourite treat for small birds.',    imgFile:'images/millet.jpg'},
-  {id:11, name:'Bird Swing & Perch',      animal:'bird', type:'toy',  em:'🪵', price:249,  badge:'new',  bl:'New',         desc:'Wooden swing with bell. Natural wood, safe & stimulating.',           imgFile:'images/bird-swing.jpg'},
-  {id:12, name:'Hikari Goldfish Pellets', animal:'fish', type:'food', em:'🫧', price:450,  badge:'best', bl:'Best Seller', desc:'Colour-enhancing pellets, 500g. Brings out vibrant fish colours.',    imgFile:'images/hikari.jpg'},
-  {id:13, name:'TetraMin Tropical Flakes',animal:'fish', type:'food', em:'🌊', price:380,  badge:'sub',  bl:'Subscribe',   desc:'Flake food for tropical fish. Multi-protein blend for vitality.',    imgFile:'images/tetramin.jpg'},
-  {id:14, name:'Dog Sniff Mat',           animal:'dog',  type:'toy',  em:'🧩', price:599,  badge:'new',  bl:'New',         desc:'Mental stimulation mat. Reduces anxiety, keeps dogs busy.',           imgFile:'images/sniff-mat.jpg'},
+  /* ── DOGS · DRY FOOD ── */
+  {id:1,  name:'Pedigree Adult Chicken & Veg', animal:'dog',  type:'food', em:'🐶', price:499,  badge:'best', bl:'Best Seller', desc:'3kg dry kibble with 37 essential nutrients. 100% complete & balanced for adult dogs.', imgFile:'images/products//1.jpg'},
+  {id:2,  name:'Drools Focus Puppy Super Premium', animal:'dog', type:'food', em:'🌾', price:649, badge:'new', bl:'New', desc:'3kg puppy dry food. DHA for brain development, calcium for strong bones.', imgFile:'images/products//2.jpg'},
+  {id:3,  name:'Royal Canin Medium Adult',    animal:'dog',  type:'food', em:'🏆', price:1850, badge:'best', bl:'Best Seller', desc:'4kg breed-specific dry food. Supports digestion, skin & coat health for medium breeds.', imgFile:'images/products//3.jpg'},
+ 
+  /* ── DOGS · WET FOOD ── */
+  {id:4,  name:'Pedigree Chicken & Liver Wet', animal:'dog', type:'food', em:'🥩', price:85,   badge:'sub',  bl:'Subscribe', desc:'100g pouch, chunks in gravy. Real chicken & liver for healthy muscle growth.', imgFile:'images/products//4.jpg'},
+ 
+  /* ── DOGS · TOYS ── */
+  {id:5,  name:'Cotton Rope Tug Toy',         animal:'dog',  type:'toy',  em:'🎾', price:299,  badge:'new',  bl:'New',        desc:'Handmade cotton rope, 3-knot design. Cleans teeth and great for bonding sessions.', imgFile:'images/products//5.jpg'},
+  {id:6,  name:'Sniff & Puzzle Mat',          animal:'dog',  type:'toy',  em:'🧩', price:549,  badge:'new',  bl:'New',        desc:'Nose-work mat for mental stimulation. Slows eating and reduces anxiety in dogs.', imgFile:'images/products//6.jpg'},
+ 
+  /* ── CATS · DRY FOOD ── */
+  {id:7,  name:'Whiskas Adult Ocean Fish',    animal:'cat',  type:'food', em:'🐠', price:375,  badge:'best', bl:'Best Seller', desc:'450g dry kibble, ocean fish flavour. 41 essential nutrients for adult cats.', imgFile:'images/products//7.jpg'},
+  {id:8,  name:'Me-O Adult Tuna Dry Food',    animal:'cat',  type:'food', em:'🐟', price:320,  badge:'new',  bl:'New',        desc:'1.2kg dry food with tuna flavour. Promotes shiny coat and healthy digestion.', imgFile:'images/products//8.jpg'},
+ 
+  /* ── CATS · WET FOOD ── */
+  {id:9,  name:'Whiskas Tuna in Jelly Pouch', animal:'cat',  type:'food', em:'🥣', price:40,   badge:'sub',  bl:'Subscribe',  desc:'85g wet pouch, tuna in jelly. Irresistible taste with high moisture content.', imgFile:'images/products//9.jpg'},
+  {id:10, name:'Sheba Fine Flakes Tuna',      animal:'cat',  type:'food', em:'🍱', price:65,   badge:'best', bl:'Best Seller', desc:'70g premium wet pouch. Delicate fine flakes in natural juices — grain-free.', imgFile:'images/products//10.jpg'},
+ 
+  /* ── CATS · TOYS ── */
+  {id:11, name:'Feather Wand Teaser',         animal:'cat',  type:'toy',  em:'🪶', price:179,  badge:'new',  bl:'New',        desc:'Extendable wand with bright feathers. Encourages healthy exercise and natural hunting instinct.', imgFile:'images/products//11.jpg'},
+ 
+  /* ── BIRDS · FOOD ── */
+  {id:12, name:'Taiyo Parrot & Finch Mix',    animal:'bird', type:'food', em:'🌻', price:299,  badge:'best', bl:'Best Seller', desc:'500g premium seed mix. 8 seed varieties — sunflower, millet, canary seed & more.', imgFile:'images/products//12.png'},
+  {id:13, name:'Versele-Laga Budgie Millet',  animal:'bird', type:'food', em:'🌱', price:120,  badge:'sub',  bl:'Subscribe',  desc:'250g natural millet sprays. Favourite high-energy treat for budgies & small birds.', imgFile:'images/products//13.jpg'},
+ 
+  /* ── BIRDS · TOYS ── */
+  {id:14, name:'Wooden Bird Swing & Bell',    animal:'bird', type:'toy',  em:'🪵', price:229,  badge:'new',  bl:'New',        desc:'Natural wood perch with bell. Stimulates activity and keeps birds entertained.', imgFile:'images/products//14.jpg'},
+ 
+  /* ── FISH · FOOD ── */
+  {id:15, name:'Hikari Goldfish Wheat Germ',  animal:'fish', type:'food', em:'🫧', price:420,  badge:'best', bl:'Best Seller', desc:'300g colour-enhancing pellets. Wheat germ formula for easy digestion & vibrant colour.', imgFile:'images/products//15.jpg'},
+  {id:16, name:'TetraMin Tropical Flakes',    animal:'fish', type:'food', em:'🌊', price:360,  badge:'sub',  bl:'Subscribe',  desc:'100g flake food for tropical fish. Multi-protein blend for vitality & clear water.', imgFile:'images/products//16.jpg'},
 ];
 
 /* ══ CART ══ */
