@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paws &amp; Tails — Premium Pet Store, Trivandrum</title>
+<title>Paws &amp; Tails — Online Pet Store, Trivandrum</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -12,10 +12,9 @@
   --sky:#5d9ec7;   --sky-bg:#eaf4fb;
   --blush:#d4756b; --blush-bg:#fdf0ee;
   --amber:#c89a45; --amber-bg:#fdf5e6;
-  --lav:#8a76c4;   --lav-bg:#f2eff9;
   --ink:#1e1c18;   --ink2:#2e2c28; --ink3:#6b6860; --ink4:#a8a59f;
   --bdr:#e8e4dc;   --bdr2:#f0ede6;
-  --nav-h:62px; --r:14px; --rs:9px;
+  --nav-h:62px;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -24,39 +23,6 @@ a{text-decoration:none;color:inherit;}
 button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px;}
-
-/* ══ IMAGE SLOT SYSTEM ══ 
-   Every image slot has:
-   - An <img> tag (hidden by default, shown when src is set)
-   - A fallback emoji + dashed border placeholder
-   Replace src="images/YOUR_FILE.jpg" with your actual image path
-*/
-.img-slot{
-  position:relative;width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
-.img-slot img{
-  width:100%;height:100%;object-fit:cover;
-  display:block;position:absolute;inset:0;
-  z-index:2;
-}
-/* Placeholder shown when image is missing/broken */
-.img-slot .img-placeholder{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:6px;z-index:1;
-  border:2px dashed rgba(0,0,0,.12);border-radius:8px;
-  background:inherit;
-}
-.img-slot .img-placeholder .ph-emoji{font-size:38px;opacity:.5;}
-.img-slot .img-placeholder .ph-label{
-  font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;
-  color:rgba(0,0,0,.28);text-align:center;padding:0 8px;line-height:1.4;
-}
-/* Hide placeholder when real image loads */
-.img-slot img.loaded + .img-placeholder,
-.img-slot img:not([src=""]):not([src*="YOUR_"]) + .img-placeholder{ display:none; }
 
 /* ══ INTRO ══ */
 #intro{position:fixed;inset:0;z-index:9999;background:#fff;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease;}
@@ -123,7 +89,7 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 /* ══ CART DRAWER ══ */
 #cart-ov{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:opacity .3s;}
 #cart-ov.open{opacity:1;pointer-events:all;}
-#cart-dr{position:fixed;top:0;right:0;bottom:0;z-index:701;width:min(390px,100vw);background:var(--white);transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-radius:var(--r) 0 0 var(--r);overflow:hidden;box-shadow:-4px 0 28px rgba(0,0,0,.09);}
+#cart-dr{position:fixed;top:0;right:0;bottom:0;z-index:701;width:min(390px,100vw);background:var(--white);transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-radius:20px 0 0 20px;overflow:hidden;box-shadow:-4px 0 28px rgba(0,0,0,.09);}
 #cart-dr.open{transform:translateX(0);}
 .cdh{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--bdr);}
 .cdh h3{font-family:'DM Serif Display',serif;font-size:18px;}
@@ -134,21 +100,26 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 .c-empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;}
 .c-empty .cei{font-size:44px;opacity:.3;}
 .c-empty p{font-size:13px;color:var(--ink4);}
-.citem{display:grid;grid-template-columns:56px 1fr auto;gap:11px;padding:13px 0;border-bottom:1px solid var(--bdr2);align-items:start;}
+
+/* ── Cart item with inline qty controls ── */
+.citem{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--bdr2);align-items:start;}
 .citem:last-child{border-bottom:none;}
-.cthumb{width:56px;height:56px;border-radius:var(--rs);overflow:hidden;flex-shrink:0;position:relative;}
+.cthumb{width:56px;height:56px;border-radius:10px;overflow:hidden;flex-shrink:0;position:relative;}
 .cthumb-img{width:100%;height:100%;object-fit:cover;display:block;}
 .cthumb-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:24px;}
-.cnm{font-size:13px;font-weight:500;margin-bottom:2px;line-height:1.3;}
-.cmt{font-size:11px;color:var(--ink4);margin-bottom:7px;}
-.cqty{display:flex;align-items:center;gap:7px;}
-.qb{width:22px;height:22px;border-radius:50%;background:var(--bg);border:none;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:background .15s;}
-.qb:hover{background:var(--ink);color:var(--white);}
-.qn{font-size:12px;font-weight:600;min-width:15px;text-align:center;}
-.csd{display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
-.cpr{font-size:13px;font-weight:600;}
-.cdel{background:none;border:none;color:var(--bdr);font-size:14px;transition:color .2s;}
+.cinfo{display:flex;flex-direction:column;gap:4px;}
+.cnm{font-size:13px;font-weight:500;line-height:1.3;}
+.cmt{font-size:11px;color:var(--ink4);}
+.citem-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+/* Quantity pill */
+.qty-pill{display:flex;align-items:center;gap:0;background:var(--bg);border:1px solid var(--bdr);border-radius:20px;overflow:hidden;height:28px;}
+.qty-pill button{width:28px;height:28px;border:none;background:transparent;font-size:15px;font-weight:600;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;flex-shrink:0;}
+.qty-pill button:hover{background:var(--ink);color:#fff;}
+.qty-pill .qnum{min-width:26px;text-align:center;font-size:12px;font-weight:700;color:var(--ink);line-height:1;}
+.cpr{font-size:13px;font-weight:600;color:var(--ink);}
+.cdel{background:none;border:none;color:var(--bdr);font-size:13px;transition:color .2s;padding:2px;}
 .cdel:hover{color:#e44;}
+
 .cfoot{padding:16px 22px;border-top:1px solid var(--bdr);background:var(--bg2);}
 .ctr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
 .ctl{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--ink4);}
@@ -164,7 +135,7 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 .hero-l{padding:70px 52px 70px 64px;background:var(--bg2);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
 .hero-l::after{content:'';position:absolute;width:360px;height:360px;bottom:-100px;left:-80px;background:radial-gradient(circle,rgba(212,117,107,.1) 0%,transparent 65%);pointer-events:none;}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--blush);background:var(--blush-bg);padding:6px 14px;border-radius:20px;margin-bottom:22px;width:fit-content;}
-.hero-h1{font-family:'DM Serif Display',serif;font-size:clamp(40px,5.2vw,68px);font-weight:400;line-height:1.05;letter-spacing:-1.2px;margin-bottom:16px;}
+.hero-h1{font-family:'DM Serif Display',serif;font-size:clamp(40px,5.2vw,68px);font-weight:400;line-height:1.05;letter-spacing:-1.2px;margin-bottom:16px;color:var(--ink);}
 .hero-h1 em{font-style:italic;color:var(--blush);}
 .hero-p{font-size:14px;color:var(--ink3);line-height:1.78;max-width:340px;margin-bottom:36px;font-weight:300;}
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
@@ -179,37 +150,18 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 .av:first-child{margin-left:0;}
 .ttxt{font-size:12px;color:var(--ink4);}
 .ttxt strong{color:var(--ink);font-weight:600;display:block;}
-
-/* ── HERO RIGHT: image grid ── */
 .hero-r{background:var(--white);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:3px;padding:3px;}
-.hcell{border-radius:var(--rs);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;transition:filter .2s;min-height:180px;}
-.hcell:hover{filter:brightness(.95);}
+.hcell{border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;transition:filter .2s;min-height:180px;}
+.hcell:hover{filter:brightness(.92);}
 .hcell.sp2{grid-column:1/-1;min-height:240px;}
-
-/* Image inside hcell */
 .hcell-img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;z-index:2;display:block;}
 .hcell-emoji{font-size:64px;transition:transform .35s;z-index:1;position:relative;}
 .hcell:hover .hcell-emoji{transform:scale(1.08);}
-/* When real image exists, hide emoji */
 .hcell img.hcell-img[src]:not([src*="YOUR_"]) ~ .hcell-emoji{display:none;}
-
 .hlbl{position:absolute;bottom:14px;left:14px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-radius:8px;padding:7px 12px;z-index:3;}
 .hlt{font-size:12px;font-weight:600;}
 .hls{font-size:10px;color:var(--ink4);}
 .hbadge{position:absolute;top:12px;right:12px;background:var(--white);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:600;border:1px solid var(--bdr);z-index:3;}
-
-/* ══ IMAGE GUIDE BANNER ══ */
-.img-guide{
-  background:linear-gradient(135deg,#fff9f0,#fff3ea);
-  border:1.5px dashed #e8b97a;border-radius:12px;
-  padding:14px 20px;margin:0 64px 12px;
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-}
-.ig-icon{font-size:22px;}
-.ig-text{flex:1;}
-.ig-text strong{font-size:12px;font-weight:700;color:#b07a2a;display:block;margin-bottom:2px;}
-.ig-text p{font-size:11px;color:#9a6820;line-height:1.5;}
-code{background:rgba(0,0,0,.07);border-radius:4px;padding:1px 5px;font-size:10px;font-family:monospace;}
 
 /* ══ TICKER ══ */
 .ticker{background:var(--ink);padding:11px 0;overflow:hidden;}
@@ -231,17 +183,14 @@ code{background:rgba(0,0,0,.07);border-radius:4px;padding:1px 5px;font-size:10px
 .cat-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;}
 .cat-scroll::-webkit-scrollbar{height:3px;}
 .cat-grid{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px;min-width:640px;}
-.cat-card{border-radius:var(--r);overflow:hidden;position:relative;aspect-ratio:.92;cursor:pointer;transition:transform .3s,box-shadow .3s;}
+.cat-card{border-radius:16px;overflow:hidden;position:relative;aspect-ratio:.92;cursor:pointer;transition:transform .3s,box-shadow .3s;}
 .cat-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.11);}
-
-/* Category card image */
 .cat-bg{width:100%;height:100%;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
 .cat-bg-img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;z-index:2;}
 .cate{font-size:56px;transition:transform .4s;z-index:1;position:relative;}
 .cat-card:hover .cate{transform:scale(1.12);}
-/* Hide emoji when real image loaded */
 .cat-bg img.cat-bg-img[src]:not([src*="YOUR_"]) ~ .cate{display:none;}
-.cat-ov{position:absolute;bottom:0;left:0;right:0;padding:28px 16px 14px;background:linear-gradient(transparent,rgba(20,18,14,.65));border-radius:0 0 var(--r) var(--r);z-index:3;}
+.cat-ov{position:absolute;bottom:0;left:0;right:0;padding:28px 16px 14px;background:linear-gradient(transparent,rgba(20,18,14,.65));border-radius:0 0 16px 16px;z-index:3;}
 .cat-nm{font-size:14px;font-weight:600;color:var(--white);}
 .cat-ct{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
 
@@ -253,72 +202,107 @@ code{background:rgba(0,0,0,.07);border-radius:4px;padding:1px 5px;font-size:10px
 .fp:hover{border-color:var(--ink4);color:var(--ink);}
 .fp.on{background:var(--ink);color:var(--white);border-color:var(--ink);}
 .prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.pcard{background:var(--white);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s;}
+.pcard{background:var(--white);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s;}
 .pcard:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.09);z-index:2;}
-
-/* Product image area */
-.pimg{
-  aspect-ratio:1;position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-}
-/* Actual photo */
-.pimg-photo{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;display:block;z-index:2;
-}
-/* Fallback emoji when no real image */
+.pimg{aspect-ratio:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.pimg-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:2;}
 .pimg-emoji{font-size:50px;transition:transform .4s cubic-bezier(.25,.46,.45,.94);z-index:1;position:relative;}
 .pcard:hover .pimg-emoji{transform:scale(1.09);}
-/* Hide emoji fallback when real image present */
 .pimg img.pimg-photo[src]:not([src*="YOUR_"]) ~ .pimg-emoji{display:none;}
-
 .pbadge{position:absolute;top:10px;left:10px;font-size:8.5px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:20px;z-index:4;}
 .b-best{background:var(--ink);color:var(--white);}
 .b-new{background:var(--sage);color:var(--white);}
 .b-sub{background:var(--amber-bg);color:var(--amber);border:1px solid #ebd9a8;}
-.pbody{padding:12px 14px 16px;}
+.pbody{padding:12px 14px 14px;}
 .panim{font-size:9.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;}
 .pnm{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:2px;}
 .pds{font-size:11px;color:var(--ink4);margin-bottom:10px;line-height:1.45;}
-.pfoot{display:flex;align-items:center;justify-content:space-between;}
+.pfoot{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .ppr{font-family:'DM Serif Display',serif;font-size:15px;}
-.padd{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--white);border:none;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+
+/* In-card qty control — shown after first add */
+.pcard-qty{display:none;align-items:center;gap:0;background:var(--bg);border:1.5px solid var(--bdr);border-radius:20px;overflow:hidden;height:30px;}
+.pcard-qty.show{display:flex;}
+.pcard-qty button{width:28px;height:30px;border:none;background:transparent;font-size:14px;font-weight:700;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;}
+.pcard-qty button:hover{background:var(--ink);color:#fff;}
+.pcard-qty .pcqn{min-width:24px;text-align:center;font-size:12px;font-weight:700;color:var(--ink);}
+/* Add to cart button (shown when qty = 0) */
+.padd{display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:20px;background:var(--ink);color:var(--white);border:none;font-size:11px;font-weight:600;transition:background .2s;white-space:nowrap;}
 .padd:hover{background:var(--blush);}
 
-/* ── Upload guide overlay on pimg ── */
-.pimg-guide{
-  position:absolute;bottom:6px;right:6px;z-index:5;
-  background:rgba(255,255,255,.88);backdrop-filter:blur(4px);
-  border-radius:6px;padding:3px 7px;
-  font-size:8px;font-weight:600;color:var(--ink3);letter-spacing:.5px;
-  border:1px dashed var(--bdr);white-space:nowrap;
-  pointer-events:none;
+/* ══ PRODUCT POPUP / MODAL ══ */
+#popup-ov{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px);}
+#popup-ov.open{opacity:1;pointer-events:all;}
+#popup-box{
+  position:fixed;top:50%;left:50%;z-index:801;
+  transform:translate(-50%,-52%) scale(.96);
+  opacity:0;pointer-events:none;
+  transition:transform .32s cubic-bezier(.4,0,.2,1),opacity .3s;
+  width:min(680px,95vw);
+  background:var(--white);border-radius:20px;overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.22);
+  display:grid;grid-template-columns:1fr 1fr;
 }
+#popup-box.open{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:all;}
+.popup-img-col{
+  position:relative;min-height:320px;
+  display:flex;align-items:center;justify-content:center;
+}
+.popup-img-bg{position:absolute;inset:0;background:var(--bg);}
+.popup-img-photo{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:block;z-index:2;}
+.popup-img-emoji{font-size:90px;position:relative;z-index:3;}
+.popup-img-photo[src]:not([src*="YOUR_"]) ~ .popup-img-emoji{display:none;}
+.popup-badge{position:absolute;top:14px;left:14px;z-index:4;font-size:9px;font-weight:700;letter-spacing:.5px;padding:4px 11px;border-radius:20px;}
+.popup-info{padding:32px 28px;display:flex;flex-direction:column;gap:0;overflow-y:auto;max-height:520px;}
+.popup-close{position:absolute;top:14px;right:14px;z-index:10;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.9);border:none;font-size:14px;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(6px);}
+.popup-close:hover{background:var(--ink);color:#fff;}
+.popup-animal-tag{font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.popup-name{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;line-height:1.2;margin-bottom:6px;}
+.popup-desc{font-size:12px;color:var(--ink4);line-height:1.7;margin-bottom:16px;}
+.popup-price{font-family:'DM Serif Display',serif;font-size:30px;margin-bottom:6px;}
+.popup-price small{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--ink4);font-weight:400;}
+.popup-divider{height:1px;background:var(--bdr2);margin:14px 0;}
+.popup-features{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.popup-feat{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink3);}
+.popup-feat::before{content:'✓';color:var(--sage);font-weight:700;font-size:11px;}
+/* Popup qty row */
+.popup-qty-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.popup-qty-label{font-size:11px;font-weight:600;color:var(--ink4);text-transform:uppercase;letter-spacing:.8px;}
+.popup-qty-pill{display:flex;align-items:center;background:var(--bg);border:1.5px solid var(--bdr);border-radius:24px;overflow:hidden;height:34px;}
+.popup-qty-pill button{width:34px;height:34px;border:none;background:transparent;font-size:16px;font-weight:600;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;}
+.popup-qty-pill button:hover{background:var(--ink);color:#fff;}
+.popup-qty-pill .pqn{min-width:30px;text-align:center;font-size:14px;font-weight:700;color:var(--ink);}
+.popup-add-btn{
+  width:100%;padding:13px;border-radius:10px;
+  background:var(--ink);color:var(--white);border:none;
+  font-size:13px;font-weight:600;letter-spacing:.3px;
+  transition:background .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.popup-add-btn:hover{background:var(--blush);}
 
 /* ══ PROMO BANNER ══ */
-.promo{background:var(--white);border-radius:var(--r);display:grid;grid-template-columns:1fr 1fr;overflow:hidden;margin:0 64px 56px;}
+.promo{background:var(--white);border-radius:16px;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;margin:0 64px 56px;}
 .promo-l{padding:52px 44px;background:var(--bg2);display:flex;flex-direction:column;justify-content:center;}
 .promo-chip{display:inline-block;background:var(--blush-bg);color:var(--blush);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:14px;width:fit-content;}
 .promo-l h3{font-family:'DM Serif Display',serif;font-size:clamp(26px,3vw,44px);font-weight:400;line-height:1.1;letter-spacing:-.5px;margin-bottom:10px;}
 .promo-l h3 em{font-style:italic;color:var(--blush);}
 .promo-l p{font-size:13px;color:var(--ink3);line-height:1.75;margin-bottom:22px;font-weight:300;}
 .promo-note{font-size:11px;color:var(--ink4);margin-top:8px;}
-/* Promo right — can have a banner image */
 .promo-r{position:relative;overflow:hidden;min-height:260px;display:flex;align-items:center;justify-content:center;}
 .promo-r-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
 .promo-r-overlay{position:absolute;inset:0;background:var(--ink);z-index:0;}
-/* When image is set, hide the dark overlay */
 .promo-r img.promo-r-img[src]:not([src*="YOUR_"]) ~ .promo-r-overlay{opacity:.5;}
 .promo-r::before{content:'🐾';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:160px;opacity:.07;pointer-events:none;z-index:2;}
 .promo-pct-w{text-align:center;position:relative;z-index:3;}
 .promo-pct{font-family:'DM Serif Display',serif;font-size:80px;color:var(--white);line-height:1;}
-.promo-pct-s{font-size:12px;color:#555;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+.promo-pct-s{font-size:12px;color:#888;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
 .promo-lbl{position:absolute;top:20px;right:20px;background:var(--blush);color:var(--white);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:20px;z-index:4;}
 
 /* ══ SUBSCRIPTION ══ */
 #subscription{background:var(--white);}
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.plan{border-radius:var(--r);border:1px solid var(--bdr);padding:34px 26px;background:var(--white);transition:transform .28s,box-shadow .28s;}
+.plan{border-radius:16px;border:1px solid var(--bdr);padding:34px 26px;background:var(--white);transition:transform .28s,box-shadow .28s;}
 .plan:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,.09);z-index:2;}
 .plan.star{background:var(--ink);color:var(--white);border-color:var(--ink);}
 .plan-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 11px;border-radius:20px;margin-bottom:18px;}
@@ -339,15 +323,14 @@ code{background:rgba(0,0,0,.07);border-radius:4px;padding:1px 5px;font-size:10px
 .plan.star .plan-btn{background:var(--white);color:var(--ink);}
 .plan.star .plan-btn:hover{background:var(--bg);}
 
-/* ══ FEATURED COLLECTIONS ══ */
+/* ══ COLLECTIONS ══ */
 #collections{background:var(--bg);}
 .coll-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.cc2{border-radius:var(--r);overflow:hidden;position:relative;cursor:pointer;transition:transform .28s;}
+.cc2{border-radius:16px;overflow:hidden;position:relative;cursor:pointer;transition:transform .28s;}
 .cc2:hover{transform:scale(1.015);}
 .cc2.tall{grid-row:span 2;}
 .ccimg{width:100%;min-height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
 .cc2.tall .ccimg{min-height:432px;}
-/* Collection image */
 .ccimg-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;}
 .ccimg-emoji{font-size:80px;z-index:1;position:relative;}
 .cc2.tall .ccimg-emoji{font-size:100px;}
@@ -367,8 +350,7 @@ code{background:rgba(0,0,0,.07);border-radius:4px;padding:1px 5px;font-size:10px
 /* ══ ABOUT ══ */
 #about{background:var(--white);}
 .about-g{display:grid;grid-template-columns:1fr 1fr;gap:68px;align-items:center;}
-.about-img{border-radius:var(--r);overflow:hidden;background:var(--bg);aspect-ratio:.88;display:flex;flex-direction:column;justify-content:flex-end;position:relative;}
-/* About section image */
+.about-img{border-radius:16px;overflow:hidden;background:var(--bg);aspect-ratio:.88;display:flex;flex-direction:column;justify-content:flex-end;position:relative;}
 .about-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
 .about-bg-em{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:150px;opacity:.08;z-index:0;}
 .about-q-box{padding:26px;position:relative;background:linear-gradient(transparent,rgba(10,8,5,.72));z-index:2;}
@@ -386,7 +368,7 @@ code{background:rgba(0,0,0,.07);border-radius:4px;padding:1px 5px;font-size:10px
 
 /* ══ CONTACT ══ */
 #contact{background:var(--bg);}
-.contact-card{background:var(--white);border-radius:var(--r);overflow:hidden;}
+.contact-card{background:var(--white);border-radius:16px;overflow:hidden;}
 .contact-top{padding:36px 36px 28px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--bdr);}
 .contact-top h2{font-family:'DM Serif Display',serif;font-size:clamp(24px,3vw,40px);font-weight:400;letter-spacing:-.5px;line-height:1.1;}
 .contact-top h2 em{font-style:italic;color:var(--blush);}
@@ -417,37 +399,28 @@ code{background:rgba(0,0,0,.07);border-radius:4px;padding:1px 5px;font-size:10px
 .cbrand-sub{font-size:12px;color:var(--ink4);}
 
 /* ══ FOOTER ══ */
-footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.fl{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);}
-.fl em{font-style:italic;color:var(--blush);}
-.fc{font-size:11px;color:var(--ink4);}
-.flinks{display:flex;gap:20px;}
-.flinks a{font-size:11px;color:var(--ink4);transition:color .2s;}
-.flinks a:hover{color:var(--ink);}
+footer{background:#111009;padding:64px 64px 0;}
+.foot-main{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;padding-bottom:52px;border-bottom:1px solid rgba(255,255,255,.07);}
+.foot-logo{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;color:#fff;letter-spacing:-.3px;margin-bottom:10px;}
+.foot-logo em{font-style:italic;color:var(--blush);}
+.foot-tagline{font-size:12px;color:#3e3c3a;line-height:1.8;max-width:210px;font-weight:300;margin-bottom:24px;}
+.foot-social{display:flex;gap:8px;}
+.foot-soc{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;text-decoration:none;}
+.foot-soc:hover{background:var(--blush);border-color:var(--blush);transform:translateY(-2px);}
+.foot-col h4{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#383532;margin-bottom:18px;}
+.foot-col a{display:block;font-size:12.5px;color:#555250;padding:5px 0;transition:color .2s;text-decoration:none;font-weight:300;}
+.foot-col a:hover{color:#fff;}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:18px 0 28px;}
+.foot-copy{font-size:11px;color:#383532;}
+.foot-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:5px 12px;font-size:10px;color:#444;letter-spacing:.5px;}
 
 /* ══ TOAST ══ */
-#toast{position:fixed;bottom:22px;right:22px;z-index:800;background:var(--ink);color:var(--white);padding:12px 18px;border-radius:10px;font-size:12px;font-weight:500;transform:translateY(60px);opacity:0;pointer-events:none;transition:all .3s;max-width:280px;line-height:1.4;box-shadow:0 4px 24px rgba(0,0,0,.18);}
-#toast.show{transform:translateY(0);opacity:1;}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);z-index:900;background:var(--ink);color:var(--white);padding:11px 20px;border-radius:24px;font-size:12px;font-weight:500;opacity:0;pointer-events:none;transition:all .3s;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.18);}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
 /* ══ SCROLL REVEAL ══ */
 .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;}
 .rv.vis{opacity:1;transform:translateY(0);}
-
-/* ══ IMAGE REFERENCE PANEL ══ */
-.img-ref-panel{
-  background:var(--white);border-top:1px solid var(--bdr);
-  padding:48px 64px;
-}
-.img-ref-panel h3{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:6px;}
-.img-ref-panel > p{font-size:12px;color:var(--ink4);margin-bottom:28px;}
-.img-ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
-.img-ref-item{
-  background:var(--bg);border:1.5px dashed var(--bdr);border-radius:10px;
-  padding:14px 16px;
-}
-.ir-section{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:4px;}
-.ir-key{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px;}
-.ir-path{font-size:10px;color:var(--blush);font-family:monospace;word-break:break-all;}
 
 /* ══ RESPONSIVE ══ */
 @media(max-width:1100px){.prod-grid{grid-template-columns:repeat(3,1fr);}.about-g{gap:44px;}}
@@ -459,10 +432,12 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
   .nav-logo{margin-right:auto;}
   .sec{padding:52px 24px;}
   .stats{padding:40px 24px;}
-  footer{padding:22px 24px;flex-direction:column;text-align:center;}
+  footer{padding:44px 24px 0;}
+  .foot-main{grid-template-columns:1fr 1fr;gap:32px;padding-bottom:36px;}
+  .foot-bottom{padding:16px 0 22px;}
   .promo{margin:0 24px 44px;grid-template-columns:1fr;}
-  .img-guide{margin:0 24px 12px;}
-  .img-ref-panel{padding:44px 24px;}
+  #popup-box{grid-template-columns:1fr;}
+  .popup-img-col{min-height:220px;}
 }
 @media(max-width:768px){
   #home{grid-template-columns:1fr;}
@@ -486,7 +461,7 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
   .promo{margin:0 16px 36px;}
   .cright-top{grid-template-columns:1fr;}
   .cright-col:first-child{border-right:none;border-bottom:1px solid var(--bdr);}
-  .img-ref-grid{grid-template-columns:1fr 1fr;}
+  .foot-main{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -532,7 +507,6 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
 <!-- ══ NAVBAR ══ -->
 <nav id="navbar">
   <a class="nav-logo" href="#home">
-    <!-- ▶ Replace src with your logo file: images/YOUR_LOGO.png -->
     <img class="nav-logo-img" src="images/YOUR_LOGO.png" alt="Paws & Tails Logo" onerror="this.style.display='none'"/>
     <span class="nav-logo-text">Paws <em>&amp;</em> Tails</span>
   </a>
@@ -571,10 +545,39 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
   </div>
 </div>
 
+<!-- ══ PRODUCT POPUP ══ -->
+<div id="popup-ov" onclick="closePopup()"></div>
+<div id="popup-box">
+  <button class="popup-close" onclick="closePopup()">✕</button>
+  <div class="popup-img-col" id="popup-img-col">
+    <div class="popup-img-bg" id="popup-img-bg"></div>
+    <img class="popup-img-photo" id="popup-img-photo" src="" alt="">
+    <span class="popup-img-emoji" id="popup-img-emoji"></span>
+    <span class="popup-badge" id="popup-badge"></span>
+  </div>
+  <div class="popup-info">
+    <div class="popup-animal-tag" id="popup-animal-tag"></div>
+    <div class="popup-name" id="popup-name"></div>
+    <div class="popup-desc" id="popup-desc"></div>
+    <div class="popup-price" id="popup-price"></div>
+    <div class="popup-divider"></div>
+    <div class="popup-features" id="popup-features"></div>
+    <div class="popup-qty-row">
+      <span class="popup-qty-label">Qty</span>
+      <div class="popup-qty-pill">
+        <button onclick="popupQtyChange(-1)">−</button>
+        <span class="pqn" id="popup-qty-n">1</span>
+        <button onclick="popupQtyChange(1)">+</button>
+      </div>
+    </div>
+    <button class="popup-add-btn" id="popup-add-btn" onclick="popupAddToCart()">🛒 Add to Cart</button>
+  </div>
+</div>
+
 <!-- ══ HERO ══ -->
 <section id="home">
   <div class="hero-l">
-    <div class="hero-tag">🐾 Trivandrum's Premier Pet Store</div>
+    <div class="hero-tag">🐾 Trivandrum's #1 Online Pet Store</div>
     <h1 class="hero-h1">Give your pet<br>the <em>very best.</em></h1>
     <p class="hero-p">Curated food, toys &amp; essentials for dogs, cats, birds and fish. Sourced for Kerala's climate, delivered to your door.</p>
     <div class="hero-btns">
@@ -595,24 +598,18 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
     </div>
   </div>
   <div class="hero-r">
-    <!-- ▼ HERO IMAGE 1 — full-width top banner (dogs) -->
     <div class="hcell sp2" style="background:var(--sage-bg)" onclick="jumpFilter('dog')">
-      <!-- ▶ Replace src: images/hero-dogs-banner.jpg  (recommended: 900×500px) -->
       <img class="hcell-img" src="images/dog1.jpg" alt="Dog Collection" onerror="this.style.display='none'">
       <span class="hcell-emoji">🐕</span>
       <div class="hlbl"><div class="hlt">Premium Dog Collection</div><div class="hls">Food, toys &amp; accessories</div></div>
       <div class="hbadge">70+ Products</div>
     </div>
-    <!-- ▼ HERO IMAGE 2 — cats -->
     <div class="hcell" style="background:var(--blush-bg)" onclick="jumpFilter('cat')">
-      <!-- ▶ Replace src: images/hero-cats.jpg  (recommended: 440×400px) -->
       <img class="hcell-img" src="images/cat1.jpg" alt="Cat Collection" onerror="this.style.display='none'">
       <span class="hcell-emoji">🐈</span>
       <div class="hlbl"><div class="hlt">For Cats</div><div class="hls">4 products</div></div>
     </div>
-    <!-- ▼ HERO IMAGE 3 — fish -->
     <div class="hcell" style="background:var(--sky-bg)" onclick="jumpFilter('fish')">
-      <!-- ▶ Replace src: images/hero-fish.jpg  (recommended: 440×400px) -->
       <img class="hcell-img" src="images/fish1.jpg" alt="Fish Collection" onerror="this.style.display='none'">
       <span class="hcell-emoji">🐟</span>
       <div class="hlbl"><div class="hlt">For Fish</div><div class="hls">3 products</div></div>
@@ -622,15 +619,6 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
 
 <!-- ══ TICKER ══ -->
 <div class="ticker"><div class="ticker-t" id="ticker-t"></div></div>
-
-<!-- ══ IMAGE GUIDE ══
-<div class="img-guide">
-  <div class="ig-icon">📸</div>
-  <div class="ig-text">
-    <strong>HOW TO ADD YOUR IMAGES</strong>
-    <p>Every section has an image slot. Put your photos in the <code>images/</code> folder next to this HTML file, then replace the placeholder filenames (like <code>YOUR_PRODUCT_DOG_1.jpg</code>) with your actual filenames. The emoji falls back automatically if no image is found.</p>
-  </div>
-</div> -->
 
 <!-- ══ CATEGORIES ══ -->
 <section class="sec" id="categories" style="background:var(--white)">
@@ -643,47 +631,34 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
   </div>
   <div class="cat-scroll">
     <div class="cat-grid">
-
-      <!-- CATEGORY: Dogs -->
       <div class="cat-card rv" onclick="jumpFilter('dog')">
         <div class="cat-bg" style="background:var(--sage-bg)">
-          <!-- ▶ Replace src: images/category-dogs.jpg  (recommended: 400×440px) -->
-          <img class="cat-bg-img" src="images/dog3.jpg" alt="Dogs Category" onerror="this.style.display='none'">
+          <img class="cat-bg-img" src="images/dog3.jpg" alt="Dogs" onerror="this.style.display='none'">
           <span class="cate">🐕</span>
         </div>
         <div class="cat-ov"><div class="cat-nm">Dogs</div><div class="cat-ct">4 products</div></div>
       </div>
-
-      <!-- CATEGORY: Cats -->
       <div class="cat-card rv" onclick="jumpFilter('cat')" style="transition-delay:.07s">
         <div class="cat-bg" style="background:var(--blush-bg)">
-          <!-- ▶ Replace src: images/category-cats.jpg -->
-          <img class="cat-bg-img" src="images/cat4.jpg" alt="Cats Category" onerror="this.style.display='none'">
+          <img class="cat-bg-img" src="images/cat4.jpg" alt="Cats" onerror="this.style.display='none'">
           <span class="cate">🐈</span>
         </div>
         <div class="cat-ov"><div class="cat-nm">Cats</div><div class="cat-ct">4 products</div></div>
       </div>
-
-      <!-- CATEGORY: Birds -->
       <div class="cat-card rv" onclick="jumpFilter('bird')" style="transition-delay:.14s">
         <div class="cat-bg" style="background:var(--amber-bg)">
-          <!-- ▶ Replace src: images/category-birds.jpg -->
-          <img class="cat-bg-img" src="images/bird1.webp" alt="Birds Category" onerror="this.style.display='none'">
+          <img class="cat-bg-img" src="images/bird1.webp" alt="Birds" onerror="this.style.display='none'">
           <span class="cate">🦜</span>
         </div>
         <div class="cat-ov"><div class="cat-nm">Birds</div><div class="cat-ct">3 products</div></div>
       </div>
-
-      <!-- CATEGORY: Fish -->
       <div class="cat-card rv" onclick="jumpFilter('fish')" style="transition-delay:.21s">
         <div class="cat-bg" style="background:var(--sky-bg)">
-          <!-- ▶ Replace src: images/category-fish.jpg -->
-          <img class="cat-bg-img" src="images/fish22.jpg" alt="Fish Category" onerror="this.style.display='none'">
+          <img class="cat-bg-img" src="images/fish22.jpg" alt="Fish" onerror="this.style.display='none'">
           <span class="cate">🐟</span>
         </div>
         <div class="cat-ov"><div class="cat-nm">Fish</div><div class="cat-ct">3 products</div></div>
       </div>
-
     </div>
   </div>
 </section>
@@ -718,7 +693,6 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
     <p class="promo-note">Min. order ₹499 · Cancel anytime</p>
   </div>
   <div class="promo-r">
-    <!-- ▶ Replace src: images/promo-banner.jpg  (recommended: 700×500px, dark/moody works best) -->
     <img class="promo-r-img" src="images/promobanner.webp" alt="Promo Banner" onerror="this.style.display='none'">
     <div class="promo-r-overlay"></div>
     <div class="promo-pct-w">
@@ -790,33 +764,25 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
     </div>
   </div>
   <div class="coll-grid">
-    <!-- COLLECTION: Dogs tall card -->
     <div class="cc2 tall rv" onclick="jumpFilter('dog')">
       <div class="ccimg" style="background:var(--sage-bg)">
-        <!-- ▶ Replace src: images/collection-dogs.jpg  (recommended: 600×880px portrait) -->
         <img class="ccimg-photo" src="images/dogfood featur.webp" alt="Dog Collection" onerror="this.style.display='none'">
         <span class="ccimg-emoji">🐕</span>
       </div>
       <div class="ccov"><h4>Dog Full Set Series</h4><p>Food, toys &amp; accessories</p></div>
       <div class="ccarr">→</div>
     </div>
-
     <div style="display:flex;flex-direction:column;gap:14px">
-      <!-- COLLECTION: Cats -->
       <div class="cc2 rv" onclick="jumpFilter('cat')" style="transition-delay:.1s">
         <div class="ccimg" style="background:var(--blush-bg)">
-          <!-- ▶ Replace src: images/collection-cats.jpg  (recommended: 600×420px landscape) -->
           <img class="ccimg-photo" src="images/cat food features.webp" alt="Cat Collection" onerror="this.style.display='none'">
           <span class="ccimg-emoji">🐈</span>
         </div>
         <div class="ccov"><h4>Cat Collection</h4><p>Curated for indoor cats</p></div>
         <div class="ccarr">→</div>
       </div>
-
-      <!-- COLLECTION: Birds & Fish -->
       <div class="cc2 rv" onclick="jumpFilter('bird')" style="transition-delay:.2s">
         <div class="ccimg" style="background:var(--amber-bg)">
-          <!-- ▶ Replace src: images/collection-birds.jpg  (recommended: 600×420px landscape) -->
           <img class="ccimg-photo" src="images/fish food feature.jpeg" alt="Bird Collection" onerror="this.style.display='none'">
           <span class="ccimg-emoji">🦜</span>
         </div>
@@ -842,7 +808,6 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
 <section class="sec" id="about" style="background:var(--white)">
   <div class="about-g">
     <div class="about-img rv">
-      <!-- ▶ Replace src: images/about-store.jpg  (recommended: 500×570px portrait, store/team photo) -->
       <img class="about-photo" src="images/aboutimage1.jpg" alt="Paws & Tails Store" onerror="this.style.display='none'">
       <div class="about-bg-em">🐾</div>
       <div class="about-q-box">
@@ -910,24 +875,58 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
         <div class="cbrand">
           <div class="cbrand-icon">🐾</div>
           <div class="cbrand-name">Paws <em>&amp;</em> Tails</div>
-          <div class="cbrand-sub">Premium Pet Store · Thiruvananthapuram, Kerala</div>
+          <div class="cbrand-sub">Online Pet Store · Thiruvananthapuram, Kerala</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-
-
 <!-- ══ FOOTER ══ -->
 <footer>
-  <div class="fl">Paws <em>&amp;</em> Tails</div>
-  <div class="fc">© 2025 Paws &amp; Tails · Thiruvananthapuram, Kerala · All rights reserved</div>
-  <div class="flinks">
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-    <a href="https://instagram.com" target="_blank">Instagram</a>
-    <a href="#">Privacy</a>
+  <div class="foot-main">
+    <!-- Brand col -->
+    <div>
+      <div class="foot-logo">Paws <em>&amp;</em> Tails</div>
+      <p class="foot-tagline">Premium pet food &amp; accessories delivered to your door in Thiruvananthapuram. Vet-approved, Kerala-sourced.</p>
+      <div class="foot-social">
+        <a class="foot-soc" href="https://instagram.com" target="_blank" title="Instagram">📷</a>
+        <a class="foot-soc" href="https://facebook.com"  target="_blank" title="Facebook">👍</a>
+        <a class="foot-soc" href="https://wa.me/914712345678" target="_blank" title="WhatsApp">💬</a>
+        <a class="foot-soc" href="https://youtube.com"   target="_blank" title="YouTube">▶️</a>
+      </div>
+    </div>
+    <!-- Shop col -->
+    <div class="foot-col">
+      <h4>Shop</h4>
+      <a href="#products">All Products</a>
+      <a href="#" onclick="jumpFilter('dog');return false;">Dog Food &amp; Toys</a>
+      <a href="#" onclick="jumpFilter('cat');return false;">Cat Food &amp; Toys</a>
+      <a href="#" onclick="jumpFilter('bird');return false;">Bird Essentials</a>
+      <a href="#" onclick="jumpFilter('fish');return false;">Fish Essentials</a>
+    </div>
+    <!-- Company col -->
+    <div class="foot-col">
+      <h4>Company</h4>
+      <a href="#about">About Us</a>
+      <a href="#subscription">Subscribe &amp; Save</a>
+      <a href="#contact">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+    </div>
+    <!-- Contact col -->
+    <div class="foot-col">
+      <h4>Contact</h4>
+      <a href="tel:+914712345678">+91 471 234 5678</a>
+      <a href="mailto:hello@pawsandtails.in">hello@pawsandtails.in</a>
+      <a href="https://wa.me/914712345678" target="_blank">WhatsApp Us</a>
+      <a href="#contact" style="margin-top:8px;display:block">Mon–Sat 9am–8pm</a>
+      <a href="#contact">Sunday 10am–6pm</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span class="foot-copy">© 2025 Paws &amp; Tails · Thiruvananthapuram, Kerala · All rights reserved</span>
+    <span class="foot-badge">🐾 Online Pet Store · India</span>
   </div>
 </footer>
 
@@ -958,54 +957,96 @@ footer{background:var(--white);border-top:1px solid var(--bdr);padding:26px 64px
   }
 })();
 
-/* ══ PRODUCTS DATA ══
-   imgFile: put your image filename in images/ folder
-   e.g.  imgFile:'prod-royal-canin.jpg'  →  images/prod-royal-canin.jpg
-*/
+/* ══ PRODUCTS DATA ══ */
 const AC={
   dog:{bg:'var(--sage-bg)',text:'var(--sage)'},
   cat:{bg:'var(--blush-bg)',text:'var(--blush)'},
   bird:{bg:'var(--amber-bg)',text:'var(--amber)'},
   fish:{bg:'var(--sky-bg)',text:'var(--sky)'},
 };
+
+/* Product features shown in popup */
+const FEATS={
+  food:['Vet-approved formula','Sourced for Kerala climate','Best-before date guaranteed'],
+  toy:['Safe & non-toxic materials','Durable construction','Vet-recommended enrichment'],
+};
+
 const PRODS=[
-  {id:1, name:'pedigree puppy',   animal:'dog', type:'food',em:'🦴',price:2150,badge:'best',bl:'Best Seller',desc:'Large breed dry food, 15kg',        imgFile:'images/cat1.jpg'},
-  {id:2, name:'Pedigree Wet Food Pouch',  animal:'dog', type:'food',em:'🥩',price:85,  badge:'sub', bl:'Subscribe',  desc:'Chicken & liver jelly, 12-pack',    imgFile:'images/pedigree-wet.jpg'},
-  {id:3, name:'Drools Puppy Starter',     animal:'dog', type:'food',em:'🌾',price:650, badge:'new', bl:'New',        desc:'Puppy starter food, 3kg',           imgFile:'images/drools-puppy.jpg'},
-  {id:4, name:'Rope Tug Toy Set',         animal:'dog', type:'toy', em:'🎾',price:349, badge:'new', bl:'New',        desc:'Durable cotton rope, set of 3',     imgFile:'images/rope-toy.jpg'},
-  {id:5, name:'Whiskas Dry Cat Food',     animal:'cat', type:'food',em:'🐠',price:750, badge:'best',bl:'Best Seller',desc:'Ocean fish flavour, 1.2kg',          imgFile:'images/whiskas.jpg'},
-  {id:6, name:'Felix Wet Cat Food',       animal:'cat', type:'food',em:'🥣',price:60,  badge:'sub', bl:'Subscribe',  desc:'Jelly sachets, 12-pack',            imgFile:'images/felix.jpg'},
-  {id:7, name:'Me-O Tuna Pouches',        animal:'cat', type:'food',em:'🐟',price:45,  badge:'new', bl:'New',        desc:'Tuna in gravy, 80g pouch',          imgFile:'prod-meo.jpg'},
-  {id:8, name:'Cat Feather Wand',         animal:'cat', type:'toy', em:'🪶',price:199, badge:'new', bl:'New',        desc:'Interactive feather toy',           imgFile:'prod-feather-wand.jpg'},
-  {id:9, name:'Taiyo Parrot Mix',         animal:'bird',type:'food',em:'🌻',price:320, badge:'best',bl:'Best Seller',desc:'Premium seed mix, 500g',            imgFile:'prod-taiyo.jpg'},
-  {id:10,name:'Budgie Millet Spray',      animal:'bird',type:'food',em:'🌱',price:80,  badge:'sub', bl:'Subscribe',  desc:'Natural millet sprays, 5-pack',     imgFile:'prod-millet.jpg'},
-  {id:11,name:'Bird Swing & Perch',       animal:'bird',type:'toy', em:'🪵',price:249, badge:'new', bl:'New',        desc:'Wooden swing with bell',            imgFile:'prod-bird-swing.jpg'},
-  {id:12,name:'Hikari Goldfish Pellets',  animal:'fish',type:'food',em:'🫧',price:450, badge:'best',bl:'Best Seller',desc:'Colour-enhancing pellets, 500g',    imgFile:'prod-hikari.jpg'},
-  {id:13,name:'TetraMin Tropical Flakes', animal:'fish',type:'food',em:'🌊',price:380, badge:'sub', bl:'Subscribe',  desc:'Flake food for tropical fish',      imgFile:'prod-tetramin.jpg'},
-  {id:14,name:'Dog Sniff Mat',            animal:'dog', type:'toy', em:'🧩',price:599, badge:'new', bl:'New',        desc:'Mental stimulation mat',            imgFile:'prod-sniff-mat.jpg'},
+  {id:1,  name:'Pedigree Puppy',          animal:'dog',  type:'food', em:'🦴', price:2150, badge:'best', bl:'Best Seller', desc:'Large breed dry food, 15kg. Complete nutrition for puppies.',        imgFile:'images/cat1.jpg'},
+  {id:2,  name:'Pedigree Wet Food Pouch', animal:'dog',  type:'food', em:'🥩', price:85,   badge:'sub',  bl:'Subscribe',   desc:'Chicken & liver jelly, 12-pack. Real meat in every pouch.',          imgFile:'images/pedigree-wet.jpg'},
+  {id:3,  name:'Drools Puppy Starter',    animal:'dog',  type:'food', em:'🌾', price:650,  badge:'new',  bl:'New',         desc:'Puppy starter food, 3kg. Enriched with DHA for brain development.', imgFile:'images/drools-puppy.jpg'},
+  {id:4,  name:'Rope Tug Toy Set',        animal:'dog',  type:'toy',  em:'🎾', price:349,  badge:'new',  bl:'New',         desc:'Durable cotton rope, set of 3. Great for teeth and bonding.',        imgFile:'images/rope-toy.jpg'},
+  {id:5,  name:'Whiskas Dry Cat Food',    animal:'cat',  type:'food', em:'🐠', price:750,  badge:'best', bl:'Best Seller', desc:'Ocean fish flavour, 1.2kg. Balanced diet for indoor cats.',           imgFile:'images/whiskas.jpg'},
+  {id:6,  name:'Felix Wet Cat Food',      animal:'cat',  type:'food', em:'🥣', price:60,   badge:'sub',  bl:'Subscribe',   desc:'Jelly sachets, 12-pack. Irresistible taste cats love.',               imgFile:'images/felix.jpg'},
+  {id:7,  name:'Me-O Tuna Pouches',       animal:'cat',  type:'food', em:'🐟', price:45,   badge:'new',  bl:'New',         desc:'Tuna in gravy, 80g pouch. Premium tuna for a shiny coat.',            imgFile:'images/meo.jpg'},
+  {id:8,  name:'Cat Feather Wand',        animal:'cat',  type:'toy',  em:'🪶', price:199,  badge:'new',  bl:'New',         desc:'Interactive feather toy. Encourages healthy play and exercise.',      imgFile:'images/feather-wand.jpg'},
+  {id:9,  name:'Taiyo Parrot Mix',        animal:'bird', type:'food', em:'🌻', price:320,  badge:'best', bl:'Best Seller', desc:'Premium seed mix, 500g. 8 seed varieties for complete nutrition.',    imgFile:'images/taiyo.jpg'},
+  {id:10, name:'Budgie Millet Spray',     animal:'bird', type:'food', em:'🌱', price:80,   badge:'sub',  bl:'Subscribe',   desc:'Natural millet sprays, 5-pack. Favourite treat for small birds.',    imgFile:'images/millet.jpg'},
+  {id:11, name:'Bird Swing & Perch',      animal:'bird', type:'toy',  em:'🪵', price:249,  badge:'new',  bl:'New',         desc:'Wooden swing with bell. Natural wood, safe & stimulating.',           imgFile:'images/bird-swing.jpg'},
+  {id:12, name:'Hikari Goldfish Pellets', animal:'fish', type:'food', em:'🫧', price:450,  badge:'best', bl:'Best Seller', desc:'Colour-enhancing pellets, 500g. Brings out vibrant fish colours.',    imgFile:'images/hikari.jpg'},
+  {id:13, name:'TetraMin Tropical Flakes',animal:'fish', type:'food', em:'🌊', price:380,  badge:'sub',  bl:'Subscribe',   desc:'Flake food for tropical fish. Multi-protein blend for vitality.',    imgFile:'images/tetramin.jpg'},
+  {id:14, name:'Dog Sniff Mat',           animal:'dog',  type:'toy',  em:'🧩', price:599,  badge:'new',  bl:'New',         desc:'Mental stimulation mat. Reduces anxiety, keeps dogs busy.',           imgFile:'images/sniff-mat.jpg'},
 ];
 
 /* ══ CART ══ */
 let cart=[];
 const fmt=n=>'₹'+n.toLocaleString('en-IN');
 
-function addToCart(id){
+function cartQty(id){ const i=cart.find(x=>x.id===id); return i?i.qty:0; }
+
+function addToCart(id, qty=1){
   const p=PRODS.find(x=>x.id===id);
   if(!p)return;
   const ex=cart.find(x=>x.id===id);
-  if(ex)ex.qty++;else cart.push({...p,qty:1});
+  if(ex) ex.qty+=qty; else cart.push({...p,qty});
   syncCart();
   showToast(`✓ ${p.name} added to cart`);
-  openCart();
+  /* update in-grid qty control */
+  refreshCardQty(id);
 }
-function removeFromCart(id){cart=cart.filter(x=>x.id!==id);syncCart();renderCart();}
+
+function setCartQty(id, qty){
+  if(qty<=0){ cart=cart.filter(x=>x.id!==id); syncCart(); refreshCardQty(id); return; }
+  const ex=cart.find(x=>x.id===id);
+  if(ex) ex.qty=qty; else{ const p=PRODS.find(x=>x.id===id); if(p) cart.push({...p,qty}); }
+  syncCart();
+  refreshCardQty(id);
+}
+
+function refreshCardQty(id){
+  /* Update the in-card qty pill */
+  const card=document.querySelector(`.pcard[data-id="${id}"]`);
+  if(!card)return;
+  const qty=cartQty(id);
+  const addBtn=card.querySelector('.padd');
+  const qtyPill=card.querySelector('.pcard-qty');
+  const qNum=card.querySelector('.pcqn');
+  if(qty>0){
+    addBtn.style.display='none';
+    qtyPill.classList.add('show');
+    qNum.textContent=qty;
+  } else {
+    addBtn.style.display='flex';
+    qtyPill.classList.remove('show');
+  }
+}
+
+function cardQtyChange(id, d){
+  const newQty=cartQty(id)+d;
+  setCartQty(id,newQty);
+  renderCart();
+}
+
+function removeFromCart(id){cart=cart.filter(x=>x.id!==id);syncCart();refreshCardQty(id);}
+
 function chgQty(id,d){
   const item=cart.find(x=>x.id===id);
   if(!item)return;
   item.qty+=d;
   if(item.qty<=0){removeFromCart(id);return;}
-  syncCart();renderCart();
+  syncCart();refreshCardQty(id);renderCart();
 }
+
 function syncCart(){
   const n=cart.reduce((s,x)=>s+x.qty,0);
   document.getElementById('cart-n').textContent=n;
@@ -1014,48 +1055,105 @@ function syncCart(){
   document.getElementById('cdh-sm').textContent=`${n} item${n!==1?'s':''}`;
   renderCart();
 }
+
 function renderCart(){
   const body=document.getElementById('cdbody');
   const foot=document.getElementById('cfoot');
   if(!cart.length){
-    body.innerHTML=`<div class="c-empty"><div class="cei">🛒</div><p>Your cart is empty</p></div>`;
+    body.innerHTML=`<div class="c-empty"><div class="cei">🛒</div><p>Your cart is empty.<br><small style="color:var(--ink4)">Browse products and add items!</small></p></div>`;
     foot.style.display='none';return;
   }
   foot.style.display='block';
   document.getElementById('ctotal').textContent=fmt(cart.reduce((s,x)=>s+x.price*x.qty,0));
   body.innerHTML=cart.map(item=>{
     const col=AC[item.animal]?.bg||'var(--bg)';
-    const imgSrc=item.imgFile?`images/${item.imgFile}`:'';
     return `
     <div class="citem">
       <div class="cthumb" style="background:${col}">
-        ${imgSrc?`<img class="cthumb-img" src="${imgSrc}" alt="${item.name}" onerror="this.style.display='none'">`:'' }
-        <div class="cthumb-fallback" style="${imgSrc?'position:absolute;z-index:0;':''}">${item.em}</div>
+        <img class="cthumb-img" src="${item.imgFile||''}" alt="${item.name}" onerror="this.style.display='none'">
+        <div class="cthumb-fallback">${item.em}</div>
       </div>
-      <div>
+      <div class="cinfo">
         <div class="cnm">${item.name}</div>
-        <div class="cmt">${item.desc}</div>
-        <div class="cqty">
-          <button class="qb" onclick="chgQty(${item.id},-1)">−</button>
-          <span class="qn">${item.qty}</span>
-          <button class="qb" onclick="chgQty(${item.id},1)">+</button>
+        <div class="cmt">${item.desc.split('.')[0]}</div>
+        <div class="citem-foot">
+          <div class="qty-pill">
+            <button onclick="chgQty(${item.id},-1)">−</button>
+            <span class="qnum">${item.qty}</span>
+            <button onclick="chgQty(${item.id},1)">+</button>
+          </div>
+          <div class="cpr">${fmt(item.price*item.qty)}</div>
+          <button class="cdel" onclick="removeFromCart(${item.id})" title="Remove">✕</button>
         </div>
-      </div>
-      <div class="csd">
-        <button class="cdel" onclick="removeFromCart(${item.id})">✕</button>
-        <div class="cpr">${fmt(item.price*item.qty)}</div>
       </div>
     </div>`;
   }).join('');
 }
+
 function openCart(){document.getElementById('cart-dr').classList.add('open');document.getElementById('cart-ov').classList.add('open');document.body.style.overflow='hidden';}
 function closeCart(){document.getElementById('cart-dr').classList.remove('open');document.getElementById('cart-ov').classList.remove('open');document.body.style.overflow='';}
 function checkout(){
   if(!cart.length){showToast('Cart is empty!');return;}
   const t=cart.reduce((s,x)=>s+x.price*x.qty,0);
   cart=[];syncCart();closeCart();
+  /* refresh all cards */
+  PRODS.forEach(p=>refreshCardQty(p.id));
   showToast(`🎉 Order placed! Total: ${fmt(t)}. We'll call to confirm.`);
 }
+
+/* ══ PRODUCT POPUP ══ */
+let popupId=null, popupQty=1;
+
+function openPopup(id){
+  const p=PRODS.find(x=>x.id===id);
+  if(!p)return;
+  popupId=id;
+  popupQty=1;
+
+  const col=AC[p.animal]||{bg:'var(--bg)',text:'var(--ink4)'};
+  document.getElementById('popup-img-bg').style.background=col.bg;
+  const ph=document.getElementById('popup-img-photo');
+  ph.src=p.imgFile||'';
+  ph.onerror=()=>ph.style.display='none';
+  ph.style.display='block';
+  document.getElementById('popup-img-emoji').textContent=p.em;
+  document.getElementById('popup-badge').textContent=p.bl;
+  document.getElementById('popup-badge').className=`popup-badge b-${p.badge}`;
+  document.getElementById('popup-animal-tag').textContent=`${p.animal} · ${p.type}`;
+  document.getElementById('popup-animal-tag').style.color=col.text;
+  document.getElementById('popup-name').textContent=p.name;
+  document.getElementById('popup-desc').textContent=p.desc;
+  document.getElementById('popup-price').innerHTML=`${fmt(p.price)} <small>per unit</small>`;
+  document.getElementById('popup-qty-n').textContent=1;
+  /* features */
+  const feats=FEATS[p.type]||[];
+  document.getElementById('popup-features').innerHTML=feats.map(f=>`<div class="popup-feat">${f}</div>`).join('');
+  /* open */
+  document.getElementById('popup-ov').classList.add('open');
+  document.getElementById('popup-box').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closePopup(){
+  document.getElementById('popup-ov').classList.remove('open');
+  document.getElementById('popup-box').classList.remove('open');
+  document.body.style.overflow='';
+  popupId=null;
+}
+
+function popupQtyChange(d){
+  popupQty=Math.max(1,popupQty+d);
+  document.getElementById('popup-qty-n').textContent=popupQty;
+}
+
+function popupAddToCart(){
+  if(!popupId)return;
+  addToCart(popupId,popupQty);
+  closePopup();
+}
+
+/* Close popup on Escape */
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closePopup(); closeCart(); }});
 
 /* ══ RENDER PRODUCTS ══ */
 function renderProds(filter){
@@ -1063,26 +1161,33 @@ function renderProds(filter){
   const g=document.getElementById('prod-grid');
   g.innerHTML=list.map(p=>{
     const col=AC[p.animal]||{bg:'var(--bg)',text:'var(--ink4)'};
-    const imgSrc=p.imgFile?`images/${p.imgFile}`:'';
+    const qty=cartQty(p.id);
     return `
-    <div class="pcard">
+    <div class="pcard" data-id="${p.id}" onclick="openPopup(${p.id})">
       <div class="pimg" style="background:${col.bg}">
-        ${imgSrc?`<img class="pimg-photo" src="${imgSrc}" alt="${p.name}" onerror="this.style.display='none'">`:'' }
+        <img class="pimg-photo" src="${p.imgFile||''}" alt="${p.name}" onerror="this.style.display='none'">
         <div class="pimg-emoji">${p.em}</div>
         <div class="pbadge b-${p.badge}">${p.bl}</div>
-        <div class="pimg-guide">📷 ${p.imgFile||'add image'}</div>
       </div>
       <div class="pbody">
         <div class="panim" style="color:${col.text}">${p.animal} · ${p.type}</div>
         <div class="pnm">${p.name}</div>
-        <div class="pds">${p.desc}</div>
-        <div class="pfoot">
+        <div class="pds">${p.desc.split('.')[0]}.</div>
+        <div class="pfoot" onclick="event.stopPropagation()">
           <div class="ppr">${fmt(p.price)}</div>
-          <button class="padd" onclick="addToCart(${p.id})">+</button>
+          <button class="padd" style="${qty>0?'display:none':''}" onclick="addToCart(${p.id})">
+            + Add
+          </button>
+          <div class="pcard-qty${qty>0?' show':''}">
+            <button onclick="cardQtyChange(${p.id},-1)">−</button>
+            <span class="pcqn">${qty||1}</span>
+            <button onclick="cardQtyChange(${p.id},1)">+</button>
+          </div>
         </div>
       </div>
     </div>`;
   }).join('');
+
   setTimeout(()=>{
     g.querySelectorAll('.pcard').forEach((el,i)=>{
       el.style.cssText=`opacity:0;transform:translateY(12px);transition:opacity .3s ${i*30}ms ease,transform .3s ${i*30}ms ease`;
@@ -1090,6 +1195,7 @@ function renderProds(filter){
     });
   },10);
 }
+
 function applyF(filter,btn){
   document.querySelectorAll('.fp').forEach(b=>b.classList.remove('on'));
   if(btn)btn.classList.add('on');
@@ -1129,10 +1235,12 @@ function showToast(msg){
   el.textContent=msg;el.classList.add('show');
   clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),3000);
 }
+
 /* Ticker */
 const tData=['Free delivery in Trivandrum','·','Subscribe & save up to 25%','·','Same-day delivery available','·','Vet-approved products','·','Dogs · Cats · Birds · Fish','·','Kerala\'s favourite pet store','·','Free delivery in Trivandrum','·','Subscribe & save up to 25%','·','Same-day delivery available','·','Vet-approved products','·','Dogs · Cats · Birds · Fish','·','Kerala\'s favourite pet store','·'];
 document.getElementById('ticker-t').innerHTML=tData.map(t=>`<span>${t}</span>`).join('');
-/* Nav */
+
+/* Nav active + smooth scroll */
 const SECS=['home','categories','products','subscription','collections','about','contact'];
 function updateActive(){
   const y=window.scrollY+80;let cur='home';
@@ -1152,6 +1260,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.1});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 window.addEventListener('resize',()=>{if(window.innerWidth>960)closeMob();});
+
 /* Init */
 renderProds('all');
 updateActive();
