@@ -3,460 +3,529 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PawKart — Premium Pet Store, Trivandrum</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<title>Paws &amp; Tails — Premium Pet Store, Trivandrum</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════
-   ROOT — MINIMAL COLOUR SYSTEM
-══════════════════════════════════════ */
-:root {
-  /* Backgrounds */
-  --bg:        #f5f3ee;
-  --bg-warm:   #faf8f3;
-  --white:     #ffffff;
-
-  /* Accent palette — soft but present */
-  --sage:      #7ba87e;   /* dogs  */
-  --sage-bg:   #eef5ee;
-  --sky:       #5d9ec7;   /* fish  */
-  --sky-bg:    #eaf4fb;
-  --blush:     #d4756b;   /* cats  */
-  --blush-bg:  #fdf0ee;
-  --amber:     #c89a45;   /* birds */
-  --amber-bg:  #fdf5e6;
-  --lavender:  #8a76c4;   /* toys  */
-  --lavender-bg:#f2eff9;
-
-  /* Primary CTA — warm charcoal */
-  --ink:       #1e1c18;
-  --ink-soft:  #2e2c28;
-  --ink-faint: #6b6860;
-  --ink-ghost: #a8a59f;
-
-  /* UI chrome */
-  --border:    #e8e4dc;
-  --border-lt: #f0ede6;
-  --nav-h:     62px;
-  --r:         14px;
-  --r-sm:      9px;
+/* ══════════════════════════════════════════
+   ROOT
+══════════════════════════════════════════ */
+:root{
+  --bg:#f5f3ee; --bg2:#faf8f3; --white:#fff;
+  --sage:#7ba87e;  --sage-bg:#eef5ee;
+  --sky:#5d9ec7;   --sky-bg:#eaf4fb;
+  --blush:#d4756b; --blush-bg:#fdf0ee;
+  --amber:#c89a45; --amber-bg:#fdf5e6;
+  --lav:#8a76c4;   --lav-bg:#f2eff9;
+  --ink:#1e1c18;   --ink2:#2e2c28; --ink3:#6b6860; --ink4:#a8a59f;
+  --bdr:#e8e4dc;   --bdr2:#f0ede6;
+  --nav-h:62px; --r:14px; --rs:9px;
 }
-
-/* ── RESET ── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;overflow-x:hidden;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);color:var(--ink);
+  font-size:14px;line-height:1.55;overflow-x:hidden;
+}
 a{text-decoration:none;color:inherit;}
 button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 ::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px;}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
+   INTRO SCREEN
+══════════════════════════════════════════ */
+#intro{
+  position:fixed;inset:0;z-index:9999;
+  background:#ffffff;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .6s ease;
+}
+#intro.fade-out{
+  opacity:0;
+  pointer-events:none;
+}
+
+/* The video wrapper — starts centred, animates to nav position */
+#intro-logo-wrap{
+  width:240px;
+  display:flex;align-items:center;justify-content:center;
+  transition:
+    width .7s cubic-bezier(.4,0,.2,1),
+    transform .7s cubic-bezier(.4,0,.2,1),
+    top .7s cubic-bezier(.4,0,.2,1),
+    left .7s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+
+/* The intro video */
+#intro-video{
+  width:100%;
+  height:auto;
+  display:block;
+  object-fit:contain;
+}
+
+/* Skip button */
+#skip-btn{
+  position:absolute;bottom:32px;right:32px;
+  padding:9px 20px;background:transparent;
+  border:1px solid var(--bdr);border-radius:20px;
+  font-size:12px;color:var(--ink4);cursor:pointer;
+  transition:all .2s;
+}
+#skip-btn:hover{border-color:var(--ink4);color:var(--ink);}
+
+/* ══════════════════════════════════════════
+   SITE WRAPPER — hidden until intro done
+══════════════════════════════════════════ */
+#site{
+  opacity:0;
+  transition:opacity .5s ease;
+}
+#site.visible{opacity:1;}
+
+/* ══════════════════════════════════════════
    NAVBAR
-══════════════════════════════════════ */
-#navbar {
+══════════════════════════════════════════ */
+#navbar{
   position:fixed;top:0;left:0;right:0;z-index:600;
   height:var(--nav-h);
   background:rgba(245,243,238,.97);
   backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--border);
+  border-bottom:1px solid var(--bdr);
   display:flex;align-items:center;
-  padding:0 40px;
+  padding:0 32px;
   transition:box-shadow .3s;
 }
 #navbar.scrolled{box-shadow:0 2px 18px rgba(0,0,0,.07);}
 
+/* Logo area — static image + name side by side */
 .nav-logo{
+  flex-shrink:0;margin-right:28px;
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;cursor:pointer;
+}
+/* ── REPLACE src WITH YOUR LOGO IMAGE FILE PATH ── */
+.nav-logo-img{
+  height:36px;width:auto;
+  object-fit:contain;
+  display:block;flex-shrink:0;
+}
+.nav-logo-text{
   font-family:'DM Serif Display',serif;
-  font-size:21px;font-weight:400;color:var(--ink);
-  letter-spacing:-.3px;flex-shrink:0;margin-right:40px;
-}
-.nav-logo span{color:var(--blush);font-style:italic;}
-
-.nav-links{
-  display:flex;gap:4px;list-style:none;flex:1;
-}
-.nav-links a{
-  position:relative;
-  font-size:13px;font-weight:400;color:var(--ink-faint);
-  padding:6px 12px;border-radius:8px;
-  transition:color .2s,background .2s;
+  font-size:19px;font-weight:400;
+  color:var(--ink);letter-spacing:-.3px;
   white-space:nowrap;
+}
+.nav-logo-text em{font-style:italic;color:var(--blush);}
+
+.nav-links{display:flex;gap:2px;list-style:none;flex:1;}
+.nav-links a{
+  font-size:13px;font-weight:400;color:var(--ink3);
+  padding:6px 11px;border-radius:8px;white-space:nowrap;
+  transition:color .2s,background .2s;
 }
 .nav-links a:hover{color:var(--ink);background:rgba(0,0,0,.04);}
 .nav-links a.active{
   color:var(--ink);font-weight:500;
-  background:var(--white);
-  box-shadow:0 1px 6px rgba(0,0,0,.07);
+  background:var(--white);box-shadow:0 1px 6px rgba(0,0,0,.07);
 }
 
 .nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
 
-.nav-pill{
-  display:flex;align-items:center;gap:4px;
-  padding:7px 14px;border-radius:20px;
-  background:var(--white);border:1px solid var(--border);
-  font-size:12px;font-weight:500;color:var(--ink-faint);
-  transition:all .2s;
+/* Desktop search + cart */
+.nav-search-btn{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--white);border:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--ink3);transition:all .2s;
 }
-.nav-pill:hover{border-color:var(--ink-ghost);color:var(--ink);}
-
-.cart-btn{
-  display:flex;align-items:center;gap:7px;
+.nav-search-btn:hover{border-color:var(--ink4);color:var(--ink);}
+.nav-cart-btn{
+  display:flex;align-items:center;gap:6px;
   background:var(--ink);color:var(--white);
   border:none;border-radius:20px;
-  padding:8px 16px;font-size:12px;font-weight:500;
-  transition:background .2s;
+  padding:8px 15px;font-size:12px;font-weight:500;transition:background .2s;
 }
-.cart-btn:hover{background:var(--ink-soft);}
-.cart-badge{
-  background:var(--blush);color:var(--white);
-  border-radius:50%;width:17px;height:17px;
-  display:flex;align-items:center;justify-content:center;
+.nav-cart-btn:hover{background:var(--ink2);}
+.nav-badge{
+  background:var(--blush);color:var(--white);border-radius:50%;
+  width:17px;height:17px;display:flex;align-items:center;justify-content:center;
   font-size:9px;font-weight:700;
 }
 
+/* ── Mobile icon buttons (hidden on desktop) ── */
+.mob-search-icon,.mob-cart-icon{display:none;}
+.mob-search-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--bg);border:1px solid var(--bdr);
+  align-items:center;justify-content:center;
+  font-size:15px;color:var(--ink3);transition:all .2s;
+}
+.mob-search-icon:hover{background:var(--white);border-color:var(--ink4);}
+.mob-cart-icon{
+  position:relative;width:36px;height:36px;border-radius:10px;
+  background:var(--ink);border:none;
+  align-items:center;justify-content:center;
+  font-size:15px;color:var(--white);transition:background .2s;
+}
+.mob-cart-icon:hover{background:var(--blush);}
+.mob-cart-dot{
+  position:absolute;top:-5px;right:-5px;
+  min-width:17px;height:17px;border-radius:9px;padding:0 4px;
+  background:var(--blush);color:var(--white);
+  font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+}
+
+/* ── Hamburger ── */
 .hamburger{
-  display:none;flex-direction:column;gap:5px;
-  background:none;border:none;padding:4px;width:32px;
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  background:none;border:none;padding:0;width:36px;height:36px;
 }
 .hamburger span{
-  width:20px;height:1.5px;background:var(--ink);
-  display:block;transition:all .3s;border-radius:2px;
-  transform-origin:center;
+  display:block;height:1.5px;background:var(--ink);
+  border-radius:4px;transition:all .3s;transform-origin:center;
 }
-.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px);}
-.hamburger.open span:nth-child(2){opacity:0;}
-.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px);}
+.hamburger span:nth-child(1){width:22px;}
+.hamburger span:nth-child(2){width:16px;}
+.hamburger span:nth-child(3){width:22px;}
+.hamburger.open span:nth-child(1){width:22px;transform:rotate(45deg) translate(4.5px,4.5px);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){width:22px;transform:rotate(-45deg) translate(4.5px,-4.5px);}
 
-/* ══════════════════════════════════════
-   MOBILE MENU
-══════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   MOBILE MENU — slides down from top
+══════════════════════════════════════════ */
 #mob-menu{
-  position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;
+  position:fixed;top:0;left:0;right:0;bottom:0;
   z-index:590;background:var(--white);
-  transform:translateX(-100%);
-  transition:transform .38s cubic-bezier(.4,0,.2,1);
-  padding:32px 28px;
+  transform:translateY(-100%);
+  transition:transform .42s cubic-bezier(.4,0,.2,1);
   display:flex;flex-direction:column;
   overflow-y:auto;
 }
-#mob-menu.open{transform:translateX(0);}
+#mob-menu.open{transform:translateY(0);}
 
-.mob-links a{
-  display:flex;align-items:center;gap:10px;
-  padding:16px 0;border-bottom:1px solid var(--border-lt);
-  font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;
-  color:var(--ink);transition:color .2s;
+/* Header row inside menu */
+.mob-menu-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:var(--nav-h);
+  border-bottom:1px solid var(--bdr2);flex-shrink:0;
 }
-.mob-links a:hover{color:var(--blush);}
-.mob-links a .mob-dot{
-  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+.mob-menu-brand{
+  font-family:'DM Serif Display',serif;
+  font-size:19px;font-weight:400;color:var(--ink);
 }
+.mob-menu-brand em{font-style:italic;color:var(--blush);}
+.mob-close-btn{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--bg);border:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:var(--ink4);transition:all .2s;cursor:pointer;
+}
+.mob-close-btn:hover{background:var(--ink);color:var(--white);}
 
-.mob-cart-btn{
-  margin-top:28px;padding:15px 20px;
-  background:var(--ink);color:var(--white);
+/* Nav links */
+.mob-nav-body{
+  flex:1;padding:8px 24px 20px;
+  display:flex;flex-direction:column;
+}
+.mob-nav-link{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:17px 0;border-bottom:1px solid var(--bdr2);
+  font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;
+  color:var(--ink);text-decoration:none;
+  transition:color .2s,padding-left .25s;
+}
+.mob-nav-link:last-of-type{border-bottom:none;}
+.mob-nav-link:hover{color:var(--blush);padding-left:8px;}
+.mob-nav-arrow{font-size:13px;color:var(--bdr);transition:color .2s,transform .2s;}
+.mob-nav-link:hover .mob-nav-arrow{color:var(--blush);transform:translateX(4px);}
+
+/* Footer of menu */
+.mob-menu-ftr{
+  padding:16px 24px 36px;
+  border-top:1px solid var(--bdr2);
+  display:flex;flex-direction:column;gap:12px;flex-shrink:0;
+}
+.mob-cart-full{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;background:var(--ink);color:var(--white);
   border:none;border-radius:12px;font-size:13px;font-weight:500;
-  display:flex;align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;transition:background .2s;width:100%;
 }
-
-.mob-bottom{
-  margin-top:auto;padding-top:24px;
-  display:flex;gap:20px;flex-wrap:wrap;
+.mob-cart-full:hover{background:var(--blush);}
+.mob-cart-full .mcf-right{font-size:11px;color:rgba(255,255,255,.5);}
+.mob-social-row{display:flex;gap:8px;}
+.mob-soc-a{
+  flex:1;padding:10px 8px;border-radius:10px;
+  background:var(--bg);border:1px solid var(--bdr);
+  font-size:11px;font-weight:500;color:var(--ink3);
+  text-align:center;text-decoration:none;display:block;
+  transition:all .2s;
 }
-.mob-bottom a{font-size:11px;color:var(--ink-ghost);letter-spacing:.5px;}
+.mob-soc-a:hover{background:var(--white);border-color:var(--ink4);color:var(--ink);}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    CART DRAWER
-══════════════════════════════════════ */
-#cart-overlay{
+══════════════════════════════════════════ */
+#cart-ov{
   position:fixed;inset:0;z-index:700;
   background:rgba(0,0,0,.22);
   opacity:0;pointer-events:none;transition:opacity .3s;
 }
-#cart-overlay.open{opacity:1;pointer-events:all;}
-
-#cart-drawer{
+#cart-ov.open{opacity:1;pointer-events:all;}
+#cart-dr{
   position:fixed;top:0;right:0;bottom:0;z-index:701;
-  width:min(390px,100vw);
-  background:var(--white);
+  width:min(390px,100vw);background:var(--white);
   transform:translateX(100%);
   transition:transform .38s cubic-bezier(.4,0,.2,1);
   display:flex;flex-direction:column;
-  border-radius:var(--r) 0 0 var(--r);
-  overflow:hidden;
-  box-shadow:-6px 0 32px rgba(0,0,0,.10);
+  border-radius:var(--r) 0 0 var(--r);overflow:hidden;
+  box-shadow:-4px 0 28px rgba(0,0,0,.09);
 }
-#cart-drawer.open{transform:translateX(0);}
-
+#cart-dr.open{transform:translateX(0);}
 .cdh{
   display:flex;align-items:center;justify-content:space-between;
-  padding:22px 24px;border-bottom:1px solid var(--border);
+  padding:20px 22px;border-bottom:1px solid var(--bdr);
 }
-.cdh h3{font-family:'DM Serif Display',serif;font-size:19px;font-weight:400;}
-.cdh small{font-size:11px;color:var(--ink-ghost);margin-top:2px;display:block;}
+.cdh h3{font-family:'DM Serif Display',serif;font-size:18px;}
+.cdh small{font-size:11px;color:var(--ink4);display:block;margin-top:1px;}
 .cdh-x{
   width:30px;height:30px;border-radius:50%;
   background:var(--bg);border:none;
   display:flex;align-items:center;justify-content:center;
-  font-size:13px;color:var(--ink-faint);transition:all .2s;
+  font-size:13px;color:var(--ink3);transition:all .2s;
 }
 .cdh-x:hover{background:var(--ink);color:var(--white);}
-
-.cdbody{flex:1;overflow-y:auto;padding:14px 24px;}
+.cdbody{flex:1;overflow-y:auto;padding:14px 22px;}
 .c-empty{
   height:100%;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:10px;text-align:center;
 }
-.c-empty .ce-icon{font-size:44px;opacity:.3;}
-.c-empty p{font-size:13px;color:var(--ink-ghost);}
-
+.c-empty .cei{font-size:44px;opacity:.3;}
+.c-empty p{font-size:13px;color:var(--ink4);}
 .citem{
-  display:grid;grid-template-columns:52px 1fr auto;
-  gap:12px;padding:14px 0;border-bottom:1px solid var(--border-lt);
-  align-items:start;
+  display:grid;grid-template-columns:50px 1fr auto;
+  gap:11px;padding:13px 0;border-bottom:1px solid var(--bdr2);align-items:start;
 }
 .citem:last-child{border-bottom:none;}
 .cthumb{
-  width:52px;height:52px;border-radius:var(--r-sm);
-  display:flex;align-items:center;justify-content:center;font-size:24px;
+  width:50px;height:50px;border-radius:var(--rs);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
 }
-.cname{font-size:13px;font-weight:500;margin-bottom:2px;line-height:1.3;}
-.cmeta{font-size:11px;color:var(--ink-ghost);margin-bottom:8px;}
-.cqty{display:flex;align-items:center;gap:8px;}
-.qbtn{
+.cnm{font-size:13px;font-weight:500;margin-bottom:2px;line-height:1.3;}
+.cmt{font-size:11px;color:var(--ink4);margin-bottom:7px;}
+.cqty{display:flex;align-items:center;gap:7px;}
+.qb{
   width:22px;height:22px;border-radius:50%;
   background:var(--bg);border:none;
   font-size:14px;font-weight:600;
-  display:flex;align-items:center;justify-content:center;
-  transition:background .15s;
+  display:flex;align-items:center;justify-content:center;transition:background .15s;
 }
-.qbtn:hover{background:var(--ink);color:var(--white);}
-.qnum{font-size:12px;font-weight:600;min-width:16px;text-align:center;}
-.cside{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
-.cprice{font-size:13px;font-weight:600;}
-.cdel{background:none;border:none;color:var(--border);font-size:15px;transition:color .2s;padding:2px;}
+.qb:hover{background:var(--ink);color:var(--white);}
+.qn{font-size:12px;font-weight:600;min-width:15px;text-align:center;}
+.csd{display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
+.cpr{font-size:13px;font-weight:600;}
+.cdel{background:none;border:none;color:var(--bdr);font-size:14px;transition:color .2s;}
 .cdel:hover{color:#e44;}
-
-.cfoot{
-  padding:18px 24px;border-top:1px solid var(--border);
-  background:var(--bg-warm);
-}
-.ctotal-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-.ctotal-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--ink-ghost);}
-.ctotal-amt{font-family:'DM Serif Display',serif;font-size:24px;}
-.cdeliv{font-size:11px;color:var(--sage);margin-bottom:14px;font-weight:500;}
-.ckout-btn{
-  width:100%;padding:14px;border-radius:10px;
+.cfoot{padding:16px 22px;border-top:1px solid var(--bdr);background:var(--bg2);}
+.ctr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.ctl{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--ink4);}
+.cta{font-family:'DM Serif Display',serif;font-size:22px;}
+.cdeliv{font-size:11px;color:var(--sage);margin-bottom:13px;font-weight:500;}
+.ckbtn{
+  width:100%;padding:13px;border-radius:10px;
   background:var(--ink);color:var(--white);border:none;
   font-size:13px;font-weight:500;transition:background .2s;
 }
-.ckout-btn:hover{background:var(--ink-soft);}
-.ccont-btn{
-  width:100%;padding:10px;margin-top:8px;border-radius:10px;
-  background:transparent;color:var(--ink-ghost);
-  border:1px solid var(--border);font-size:12px;transition:all .2s;
+.ckbtn:hover{background:var(--ink2);}
+.ccbtn{
+  width:100%;padding:9px;margin-top:7px;border-radius:10px;
+  background:transparent;color:var(--ink4);
+  border:1px solid var(--bdr);font-size:12px;transition:all .2s;
 }
-.ccont-btn:hover{border-color:var(--ink-ghost);color:var(--ink);}
+.ccbtn:hover{border-color:var(--ink4);color:var(--ink);}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    HERO
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 #home{
   min-height:100vh;padding-top:var(--nav-h);
   display:grid;grid-template-columns:52% 48%;
 }
-
 .hero-l{
-  padding:72px 52px 72px 64px;
-  background:var(--bg-warm);
+  padding:70px 52px 70px 64px;background:var(--bg2);
   display:flex;flex-direction:column;justify-content:center;
   position:relative;overflow:hidden;
 }
 .hero-l::after{
-  content:'';position:absolute;
-  width:360px;height:360px;bottom:-120px;left:-80px;
+  content:'';position:absolute;width:360px;height:360px;
+  bottom:-100px;left:-80px;
   background:radial-gradient(circle,rgba(212,117,107,.1) 0%,transparent 65%);
   pointer-events:none;
 }
-
 .hero-tag{
   display:inline-flex;align-items:center;gap:8px;
-  font-size:10.5px;font-weight:600;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--blush);
-  background:var(--blush-bg);padding:6px 14px;
-  border-radius:20px;margin-bottom:22px;width:fit-content;
+  font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--blush);background:var(--blush-bg);
+  padding:6px 14px;border-radius:20px;margin-bottom:22px;width:fit-content;
 }
 .hero-h1{
   font-family:'DM Serif Display',serif;
-  font-size:clamp(40px,5.2vw,68px);
-  font-weight:400;line-height:1.05;letter-spacing:-1.2px;
-  margin-bottom:16px;
+  font-size:clamp(40px,5.2vw,68px);font-weight:400;
+  line-height:1.05;letter-spacing:-1.2px;margin-bottom:16px;
 }
 .hero-h1 em{font-style:italic;color:var(--blush);}
 .hero-p{
-  font-size:14px;color:var(--ink-faint);line-height:1.78;
+  font-size:14px;color:var(--ink3);line-height:1.78;
   max-width:340px;margin-bottom:36px;font-weight:300;
 }
-
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
 .btn-ink{
   padding:12px 24px;background:var(--ink);color:var(--white);
   border:none;border-radius:9px;font-size:13px;font-weight:500;
   display:inline-flex;align-items:center;gap:8px;transition:background .2s;
 }
-.btn-ink:hover{background:var(--ink-soft);}
+.btn-ink:hover{background:var(--ink2);}
 .btn-ink .arr{
   width:20px;height:20px;border-radius:50%;
   background:rgba(255,255,255,.15);
   display:flex;align-items:center;justify-content:center;font-size:10px;
 }
-.btn-outline{
+.btn-out{
   padding:12px 22px;background:var(--white);color:var(--ink);
-  border:1px solid var(--border);border-radius:9px;
+  border:1px solid var(--bdr);border-radius:9px;
   font-size:13px;font-weight:500;transition:all .2s;display:inline-block;
 }
-.btn-outline:hover{border-color:var(--ink-ghost);box-shadow:0 2px 10px rgba(0,0,0,.07);}
-
+.btn-out:hover{border-color:var(--ink4);}
 .hero-trust{
-  margin-top:40px;padding-top:32px;border-top:1px solid var(--border);
+  margin-top:40px;padding-top:30px;
+  border-top:1px solid var(--bdr);
   display:flex;align-items:center;gap:14px;
 }
-.avatars{display:flex;}
+.avs{display:flex;}
 .av{
   width:29px;height:29px;border-radius:50%;
-  border:2px solid var(--white);margin-left:-8px;font-size:15px;
-  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--white);margin-left:-8px;
+  font-size:14px;display:flex;align-items:center;justify-content:center;
 }
 .av:first-child{margin-left:0;}
-.av-dog{background:var(--sage-bg);}
-.av-cat{background:var(--blush-bg);}
-.av-bird{background:var(--amber-bg);}
-.av-fish{background:var(--sky-bg);}
-.trust-txt{font-size:12px;color:var(--ink-ghost);}
-.trust-txt strong{color:var(--ink);font-weight:600;display:block;}
-
-/* Hero right grid */
+.ttxt{font-size:12px;color:var(--ink4);}
+.ttxt strong{color:var(--ink);font-weight:600;display:block;}
 .hero-r{
   background:var(--white);
   display:grid;grid-template-columns:1fr 1fr;
-  grid-template-rows:1fr 1fr;
-  gap:3px;padding:3px;
+  grid-template-rows:auto auto;gap:3px;padding:3px;
 }
 .hcell{
-  border-radius:var(--r-sm);overflow:hidden;
+  border-radius:var(--rs);overflow:hidden;
   display:flex;align-items:center;justify-content:center;
-  position:relative;cursor:pointer;
-  transition:filter .2s;
+  position:relative;cursor:pointer;transition:filter .2s;min-height:180px;
 }
-.hcell:hover{filter:brightness(.96);}
-.hcell.span2{grid-column:1/-1;}
-.hcell .em{font-size:64px;transition:transform .35s;z-index:1;}
-.hcell:hover .em{transform:scale(1.08);}
-.hcell-lbl{
+.hcell:hover{filter:brightness(.95);}
+.hcell:hover .hce{transform:scale(1.08);}
+.hcell.sp2{grid-column:1/-1;min-height:240px;}
+.hce{font-size:64px;transition:transform .35s;z-index:1;}
+.hlbl{
   position:absolute;bottom:14px;left:14px;
-  background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
+  background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
   border-radius:8px;padding:7px 12px;
 }
-.hcell-lbl .hl-t{font-size:12px;font-weight:600;}
-.hcell-lbl .hl-s{font-size:10px;color:var(--ink-ghost);}
-.hcell-badge{
+.hlt{font-size:12px;font-weight:600;}
+.hls{font-size:10px;color:var(--ink4);}
+.hbadge{
   position:absolute;top:12px;right:12px;
   background:var(--white);border-radius:20px;
-  padding:5px 10px;font-size:11px;font-weight:600;
-  border:1px solid var(--border);
+  padding:5px 10px;font-size:11px;font-weight:600;border:1px solid var(--bdr);
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    TICKER
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 .ticker{background:var(--ink);padding:11px 0;overflow:hidden;}
 .ticker-t{display:flex;gap:40px;animation:tick 26s linear infinite;white-space:nowrap;}
 .ticker-t span{font-size:10.5px;font-weight:400;letter-spacing:1.5px;color:#555;flex-shrink:0;}
-.ticker-t .td{color:#333;}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    SECTION HELPERS
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 .sec{padding:68px 64px;}
-.sh{margin-bottom:34px;}
-.sh-row{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
-.sh-ttl{font-family:'DM Serif Display',serif;font-size:clamp(22px,2.6vw,34px);font-weight:400;letter-spacing:-.5px;}
-.sh-sub{font-size:12px;color:var(--ink-ghost);margin-top:4px;}
-.sh-lnk{font-size:12px;color:var(--ink-ghost);display:flex;align-items:center;gap:3px;transition:color .2s;white-space:nowrap;}
+.sh{margin-bottom:32px;}
+.sh-row{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;margin-bottom:4px;
+}
+.sh-ttl{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(22px,2.6vw,34px);font-weight:400;letter-spacing:-.5px;
+}
+.sh-sub{font-size:12px;color:var(--ink4);margin-top:4px;}
+.sh-lnk{
+  font-size:12px;color:var(--ink4);
+  display:flex;align-items:center;gap:3px;
+  transition:color .2s;white-space:nowrap;
+}
 .sh-lnk:hover{color:var(--ink);}
 
-/* Coloured label chips */
-.chip{
-  display:inline-block;font-size:9.5px;font-weight:600;
-  letter-spacing:.8px;text-transform:uppercase;
-  padding:3px 10px;border-radius:20px;margin-bottom:18px;
-}
-.chip-sage{background:var(--sage-bg);color:var(--sage);}
-.chip-blush{background:var(--blush-bg);color:var(--blush);}
-.chip-sky{background:var(--sky-bg);color:var(--sky);}
-.chip-amber{background:var(--amber-bg);color:var(--amber);}
-.chip-lavender{background:var(--lavender-bg);color:var(--lavender);}
-
-/* ══════════════════════════════════════
-   CATEGORIES
-══════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   CATEGORIES — ALWAYS 4 IN ONE ROW
+══════════════════════════════════════════ */
 #categories{background:var(--white);}
-
-.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.cat-scroll{
+  overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;
+}
+.cat-scroll::-webkit-scrollbar{height:3px;}
+.cat-scroll::-webkit-scrollbar-thumb{background:var(--bdr);}
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(150px,1fr));
+  gap:12px;min-width:640px;
+}
 .cat-card{
   border-radius:var(--r);overflow:hidden;position:relative;
-  aspect-ratio:.88;cursor:pointer;transition:transform .3s,box-shadow .3s;
+  aspect-ratio:.92;cursor:pointer;transition:transform .3s,box-shadow .3s;
 }
-.cat-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.10);}
-.cat-card:hover .cat-em{transform:scale(1.1);}
-.cat-bg{
-  width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
-}
-.cat-em{font-size:60px;transition:transform .4s;}
+.cat-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.11);}
+.cat-card:hover .cate{transform:scale(1.12);}
+.cat-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.cate{font-size:56px;transition:transform .4s;}
 .cat-ov{
   position:absolute;bottom:0;left:0;right:0;
-  padding:28px 16px 16px;
-  background:linear-gradient(transparent,rgba(20,18,14,.58));
+  padding:28px 16px 14px;
+  background:linear-gradient(transparent,rgba(20,18,14,.65));
   border-radius:0 0 var(--r) var(--r);
 }
 .cat-nm{font-size:14px;font-weight:600;color:var(--white);}
 .cat-ct{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    PRODUCTS — COMPACT 4-COL
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 #products{background:var(--bg);}
-
-.filter-bar{
-  display:flex;gap:8px;margin-bottom:28px;
-  flex-wrap:nowrap;overflow-x:auto;
-}
+.filter-bar{display:flex;gap:8px;margin-bottom:28px;overflow-x:auto;flex-wrap:nowrap;}
 .filter-bar::-webkit-scrollbar{height:0;}
 .fp{
   padding:8px 16px;border-radius:20px;
-  background:var(--white);border:1px solid var(--border);
-  font-size:12px;font-weight:500;color:var(--ink-ghost);
+  background:var(--white);border:1px solid var(--bdr);
+  font-size:12px;font-weight:500;color:var(--ink4);
   white-space:nowrap;transition:all .2s;
 }
-.fp:hover{border-color:var(--ink-ghost);color:var(--ink);}
+.fp:hover{border-color:var(--ink4);color:var(--ink);}
 .fp.on{background:var(--ink);color:var(--white);border-color:var(--ink);}
-
-.prod-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
-}
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
 .pcard{
   background:var(--white);border-radius:var(--r);overflow:hidden;
   cursor:pointer;transition:transform .25s,box-shadow .25s;
 }
 .pcard:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.09);z-index:2;}
 .pcard:hover .pe{transform:scale(1.09);}
-
 .pimg{
-  aspect-ratio:1;
-  display:flex;align-items:center;justify-content:center;
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
   position:relative;overflow:hidden;
 }
 .pe{font-size:50px;transition:transform .4s cubic-bezier(.25,.46,.45,.94);}
@@ -468,13 +537,12 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 .b-best{background:var(--ink);color:var(--white);}
 .b-new{background:var(--sage);color:var(--white);}
 .b-sub{background:var(--amber-bg);color:var(--amber);border:1px solid #ebd9a8;}
-
 .pbody{padding:12px 14px 16px;}
 .panim{font-size:9.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;}
-.pname{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:2px;}
-.pdesc{font-size:11px;color:var(--ink-ghost);margin-bottom:10px;line-height:1.45;}
+.pnm{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:2px;}
+.pds{font-size:11px;color:var(--ink4);margin-bottom:10px;line-height:1.45;}
 .pfoot{display:flex;align-items:center;justify-content:space-between;}
-.pprice{font-family:'DM Serif Display',serif;font-size:15px;font-weight:400;}
+.ppr{font-family:'DM Serif Display',serif;font-size:15px;}
 .padd{
   width:28px;height:28px;border-radius:50%;
   background:var(--ink);color:var(--white);border:none;
@@ -483,17 +551,22 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 }
 .padd:hover{background:var(--blush);}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    PROMO BANNER
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 .promo{
   background:var(--white);border-radius:var(--r);
   display:grid;grid-template-columns:1fr 1fr;
   overflow:hidden;margin:0 64px 56px;
 }
 .promo-l{
-  padding:52px 44px;background:var(--bg-warm);
+  padding:52px 44px;background:var(--bg2);
   display:flex;flex-direction:column;justify-content:center;
+}
+.promo-chip{
+  display:inline-block;background:var(--blush-bg);color:var(--blush);
+  font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  padding:4px 12px;border-radius:20px;margin-bottom:14px;width:fit-content;
 }
 .promo-l h3{
   font-family:'DM Serif Display',serif;
@@ -501,41 +574,37 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
   line-height:1.1;letter-spacing:-.5px;margin-bottom:10px;
 }
 .promo-l h3 em{font-style:italic;color:var(--blush);}
-.promo-l p{font-size:13px;color:var(--ink-faint);line-height:1.75;margin-bottom:22px;font-weight:300;}
-.promo-note{font-size:11px;color:var(--ink-ghost);margin-top:8px;}
-
+.promo-l p{font-size:13px;color:var(--ink3);line-height:1.75;margin-bottom:22px;font-weight:300;}
+.promo-note{font-size:11px;color:var(--ink4);margin-top:8px;}
 .promo-r{
   background:var(--ink);position:relative;overflow:hidden;
   min-height:260px;display:flex;align-items:center;justify-content:center;
 }
 .promo-r::before{
-  content:'🐾';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  font-size:160px;opacity:.07;pointer-events:none;
+  content:'🐾';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);font-size:160px;opacity:.07;pointer-events:none;
 }
-.promo-pct-wrap{text-align:center;position:relative;z-index:1;}
-.promo-pct{font-family:'DM Serif Display',serif;font-size:80px;font-weight:400;color:var(--white);line-height:1;}
-.promo-pct-sub{font-size:12px;color:#555;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
-.promo-tag{
+.promo-pct-w{text-align:center;position:relative;z-index:1;}
+.promo-pct{font-family:'DM Serif Display',serif;font-size:80px;color:var(--white);line-height:1;}
+.promo-pct-s{font-size:12px;color:#555;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+.promo-lbl{
   position:absolute;top:20px;right:20px;
   background:var(--blush);color:var(--white);
   font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
   padding:4px 10px;border-radius:20px;
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    SUBSCRIPTION
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 #subscription{background:var(--white);}
-
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 .plan{
-  border-radius:var(--r);border:1px solid var(--border);
-  padding:34px 26px;transition:transform .28s,box-shadow .28s;
-  background:var(--white);
+  border-radius:var(--r);border:1px solid var(--bdr);padding:34px 26px;
+  background:var(--white);transition:transform .28s,box-shadow .28s;
 }
 .plan:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,.09);z-index:2;}
 .plan.star{background:var(--ink);color:var(--white);border-color:var(--ink);}
-
 .plan-badge{
   display:inline-block;font-size:9px;font-weight:700;
   letter-spacing:1px;text-transform:uppercase;
@@ -543,22 +612,19 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 }
 .plan:not(.star) .plan-badge{background:var(--sage-bg);color:var(--sage);}
 .plan.star .plan-badge{background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);}
-
-.plan-name{font-family:'DM Serif Display',serif;font-size:21px;font-weight:400;margin-bottom:4px;}
-.plan-price{font-family:'DM Serif Display',serif;font-size:38px;font-weight:400;line-height:1;}
-.plan.star .plan-price{color:var(--white);}
-.plan-mo{font-size:11px;color:var(--ink-ghost);margin-bottom:22px;margin-top:4px;}
+.plan-nm{font-family:'DM Serif Display',serif;font-size:21px;margin-bottom:4px;}
+.plan-pr{font-family:'DM Serif Display',serif;font-size:38px;line-height:1;}
+.plan.star .plan-pr{color:var(--white);}
+.plan-mo{font-size:11px;color:var(--ink4);margin-bottom:22px;margin-top:4px;}
 .plan.star .plan-mo{color:#555;}
-
 .plan-ul{list-style:none;margin-bottom:26px;}
 .plan-ul li{
-  display:flex;align-items:center;gap:8px;
-  padding:8px 0;border-bottom:1px solid var(--border-lt);
-  font-size:12px;font-weight:300;color:var(--ink-faint);
+  display:flex;align-items:center;gap:8px;padding:8px 0;
+  border-bottom:1px solid var(--bdr2);
+  font-size:12px;font-weight:300;color:var(--ink3);
 }
 .plan.star .plan-ul li{border-bottom-color:#2a2a27;color:#888;}
 .plan-ul li::before{content:'✓';color:var(--sage);font-weight:700;font-size:11px;flex-shrink:0;}
-
 .plan-btn{
   width:100%;padding:12px;border-radius:9px;border:none;
   font-size:12px;font-weight:500;letter-spacing:.3px;transition:all .2s;
@@ -568,11 +634,10 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 .plan.star .plan-btn{background:var(--white);color:var(--ink);}
 .plan.star .plan-btn:hover{background:var(--bg);}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    FEATURED COLLECTIONS
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 #collections{background:var(--bg);}
-
 .coll-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .cc2{
   border-radius:var(--r);overflow:hidden;position:relative;
@@ -580,11 +645,7 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 }
 .cc2:hover{transform:scale(1.015);}
 .cc2.tall{grid-row:span 2;}
-.ccimg{
-  width:100%;min-height:200px;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
-}
+.ccimg{width:100%;min-height:200px;display:flex;align-items:center;justify-content:center;}
 .cc2.tall .ccimg{min-height:432px;}
 .ccov{
   position:absolute;bottom:0;left:0;right:0;
@@ -601,17 +662,27 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
   font-size:12px;color:var(--ink);
 }
 
-/* ══════════════════════════════════════
-   ABOUT / WHY
-══════════════════════════════════════ */
-#about{background:var(--white);}
+/* ══════════════════════════════════════════
+   STATS BAR
+══════════════════════════════════════════ */
+.stats{
+  background:var(--ink);padding:48px 64px;
+  display:flex;justify-content:space-around;flex-wrap:wrap;gap:24px;align-items:center;
+}
+.si{text-align:center;}
+.si-n{font-family:'DM Serif Display',serif;font-size:38px;color:var(--white);line-height:1;}
+.si-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#444;margin-top:6px;}
+.sdiv{width:1px;height:40px;background:#282520;}
 
+/* ══════════════════════════════════════════
+   ABOUT / WHY
+══════════════════════════════════════════ */
+#about{background:var(--white);}
 .about-g{display:grid;grid-template-columns:1fr 1fr;gap:68px;align-items:center;}
 .about-img{
   border-radius:var(--r);overflow:hidden;
   background:var(--bg);aspect-ratio:.88;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  position:relative;
+  display:flex;flex-direction:column;justify-content:flex-end;position:relative;
 }
 .about-bg-em{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -621,14 +692,13 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
   padding:26px;position:relative;
   background:linear-gradient(transparent,rgba(10,8,5,.72));
 }
-.about-q{font-family:'DM Serif Display',serif;font-size:17px;font-style:italic;color:var(--white);line-height:1.55;margin-bottom:7px;}
-.about-attr{font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);}
-
-.why-list{display:flex;flex-direction:column;}
-.wi{
-  display:flex;gap:16px;align-items:flex-start;
-  padding:20px 0;border-bottom:1px solid var(--border-lt);
+.about-q{
+  font-family:'DM Serif Display',serif;font-size:17px;font-style:italic;
+  color:var(--white);line-height:1.55;margin-bottom:7px;
 }
+.about-attr{font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.why-list{display:flex;flex-direction:column;}
+.wi{display:flex;gap:16px;align-items:flex-start;padding:20px 0;border-bottom:1px solid var(--bdr2);}
 .wi-ico{
   width:36px;height:36px;border-radius:9px;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;font-size:18px;
@@ -638,77 +708,101 @@ button{font-family:'DM Sans',sans-serif;cursor:pointer;}
 .wi-ico.blush{background:var(--blush-bg);}
 .wi-ico.amber{background:var(--amber-bg);}
 .wi h4{font-size:12.5px;font-weight:600;margin-bottom:4px;}
-.wi p{font-size:12px;color:var(--ink-ghost);line-height:1.65;font-weight:300;}
+.wi p{font-size:12px;color:var(--ink4);line-height:1.65;font-weight:300;}
 
-/* ══════════════════════════════════════
-   STATS
-══════════════════════════════════════ */
-.stats{
-  background:var(--ink);padding:48px 64px;
-  display:flex;justify-content:space-around;flex-wrap:wrap;gap:24px;align-items:center;
-}
-.si{text-align:center;}
-.si-n{font-family:'DM Serif Display',serif;font-size:38px;font-weight:400;color:var(--white);line-height:1;}
-.si-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#444;margin-top:6px;}
-.sdiv{width:1px;height:40px;background:#282520;}
-
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    CONTACT
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 #contact{background:var(--bg);}
-
-.contact-card{
-  background:var(--white);border-radius:var(--r);overflow:hidden;
-}
+.contact-card{background:var(--white);border-radius:var(--r);overflow:hidden;}
 .contact-top{
-  padding:40px 40px 32px;border-bottom:1px solid var(--border);
+  padding:36px 36px 28px;
   display:flex;justify-content:space-between;align-items:flex-end;
-  flex-wrap:wrap;gap:16px;
+  flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--bdr);
 }
-.contact-top h2{font-family:'DM Serif Display',serif;font-size:clamp(24px,3vw,40px);font-weight:400;letter-spacing:-.5px;line-height:1.1;}
+.contact-top h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(24px,3vw,40px);font-weight:400;letter-spacing:-.5px;line-height:1.1;
+}
 .contact-top h2 em{font-style:italic;color:var(--blush);}
-.contact-top p{font-size:13px;color:var(--ink-faint);max-width:260px;line-height:1.7;font-weight:300;}
+.contact-top p{font-size:13px;color:var(--ink3);max-width:280px;line-height:1.7;font-weight:300;}
 
-.cgrid{display:grid;grid-template-columns:1fr 1fr 1fr;}
-.ccol{padding:28px 32px;border-right:1px solid var(--border);}
-.ccol:last-child{border-right:none;}
-.ccol h4{font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-ghost);margin-bottom:16px;}
-.ccol p,.ccol a{font-size:13px;color:var(--ink-faint);line-height:2.2;display:block;transition:color .2s;font-weight:300;}
-.ccol a:hover{color:var(--ink);}
-
+/* 2-col: form LEFT | contact+social RIGHT */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;}
+.cleft{
+  padding:32px 36px;border-right:1px solid var(--bdr);
+  display:flex;flex-direction:column;gap:6px;
+}
+.cleft h4{
+  font-size:9.5px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--ink4);margin-bottom:14px;
+}
 .cform{display:flex;flex-direction:column;gap:10px;}
 .cinp{
-  background:var(--bg);border:1px solid var(--border);border-radius:9px;
+  background:var(--bg);border:1px solid var(--bdr);border-radius:9px;
   padding:11px 14px;font-size:13px;font-family:'DM Sans',sans-serif;
   color:var(--ink);outline:none;transition:border-color .2s;
 }
-.cinp:focus{border-color:var(--ink-ghost);}
-.cinp::placeholder{color:var(--ink-ghost);}
+.cinp:focus{border-color:var(--ink4);}
+.cinp::placeholder{color:var(--ink4);}
 .csend{
   padding:12px;border-radius:9px;background:var(--ink);color:var(--white);
   border:none;font-size:13px;font-weight:500;transition:background .2s;
 }
 .csend:hover{background:var(--blush);}
 
-/* ══════════════════════════════════════
+.cright{display:flex;flex-direction:column;}
+.cright-top{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-bottom:1px solid var(--bdr);
+}
+.cright-col{padding:28px 28px;}
+.cright-col:first-child{border-right:1px solid var(--bdr);}
+.cright-col h4{
+  font-size:9.5px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--ink4);margin-bottom:14px;
+}
+.cright-col p,.cright-col a{
+  font-size:13px;color:var(--ink3);line-height:2.1;
+  display:block;font-weight:300;transition:color .2s;
+}
+.cright-col a:hover{color:var(--ink);}
+.soc-link{
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;color:var(--ink3);padding:4px 0;
+  transition:color .2s;font-weight:300;
+}
+.soc-link:hover{color:var(--ink);}
+.soc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.cbrand{
+  flex:1;background:var(--bg2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;padding:32px;text-align:center;min-height:160px;
+}
+.cbrand-icon{font-size:40px;opacity:.5;}
+.cbrand-name{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:var(--ink);}
+.cbrand-name em{font-style:italic;color:var(--blush);}
+.cbrand-sub{font-size:12px;color:var(--ink4);}
+
+/* ══════════════════════════════════════════
    FOOTER
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 footer{
-  background:var(--white);border-top:1px solid var(--border);
+  background:var(--white);border-top:1px solid var(--bdr);
   padding:26px 64px;
   display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:12px;
 }
 .fl{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);}
-.fl span{font-style:italic;color:var(--blush);}
-.fc{font-size:11px;color:var(--ink-ghost);}
+.fl em{font-style:italic;color:var(--blush);}
+.fc{font-size:11px;color:var(--ink4);}
 .flinks{display:flex;gap:20px;}
-.flinks a{font-size:11px;color:var(--ink-ghost);transition:color .2s;}
+.flinks a{font-size:11px;color:var(--ink4);transition:color .2s;}
 .flinks a:hover{color:var(--ink);}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    TOAST
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 #toast{
   position:fixed;bottom:22px;right:22px;z-index:800;
   background:var(--ink);color:var(--white);
@@ -720,29 +814,32 @@ footer{
 }
 #toast.show{transform:translateY(0);opacity:1;}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    SCROLL REVEAL
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;}
 .rv.vis{opacity:1;transform:translateY(0);}
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    RESPONSIVE
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 @media(max-width:1100px){
   .prod-grid{grid-template-columns:repeat(3,1fr);}
-  .cat-grid{grid-template-columns:repeat(2,1fr);}
-  .cgrid{grid-template-columns:1fr;}
-  .ccol{border-right:none;border-bottom:1px solid var(--border);}
-  .ccol:last-child{border-bottom:none;}
+  .about-g{gap:44px;}
 }
 @media(max-width:960px){
+  /* Navbar: hide desktop nav+buttons, show mobile icons */
   .nav-links{display:none;}
+  .nav-search-btn,.nav-cart-btn{display:none;}
+  .mob-search-icon,.mob-cart-icon{display:flex;}
   .hamburger{display:flex;}
-  .sec{padding:52px 28px;}
-  .stats{padding:40px 28px;}
-  footer{padding:22px 28px;flex-direction:column;text-align:center;}
-  .promo{margin:0 28px 44px;}
+  #navbar{padding:0 16px;}
+  .nav-logo{margin-right:auto;}
+  /* Sections */
+  .sec{padding:52px 24px;}
+  .stats{padding:40px 24px;}
+  footer{padding:22px 24px;flex-direction:column;text-align:center;}
+  .promo{margin:0 24px 44px;grid-template-columns:1fr;}
 }
 @media(max-width:768px){
   #home{grid-template-columns:1fr;}
@@ -754,58 +851,132 @@ footer{
   .coll-grid{grid-template-columns:1fr;}
   .cc2.tall{grid-row:auto;}
   .contact-top{flex-direction:column;align-items:flex-start;}
-  .promo{grid-template-columns:1fr;margin:0 24px 40px;}
+  /* Contact: stack */
+  .cgrid{grid-template-columns:1fr;}
+  .cleft{border-right:none;border-bottom:1px solid var(--bdr);padding:24px 20px;}
+  .cright-top{grid-template-columns:1fr 1fr;}
+  .cright-col{padding:20px 16px;}
 }
 @media(max-width:480px){
   .prod-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
-  .cat-grid{grid-template-columns:1fr 1fr;}
   .hero-btns{flex-direction:column;}
-  .sec{padding:44px 18px;}
-  .promo{margin:0 18px 36px;}
+  .sec{padding:44px 16px;}
+  .promo{margin:0 16px 36px;}
+  .cright-top{grid-template-columns:1fr;}
+  .cright-col:first-child{border-right:none;border-bottom:1px solid var(--bdr);}
 }
 </style>
 </head>
 <body>
 
+<!-- ══════════════════════════════════════
+     INTRO SCREEN
+══════════════════════════════════════ -->
+<div id="intro">
+  <!--
+    ╔══════════════════════════════════════════╗
+    ║  LOGO VIDEO — INTRO (full-screen centre) ║
+    ║  Replace  YOUR_LOGO_VIDEO.mp4  with      ║
+    ║  your actual video file path             ║
+    ╚══════════════════════════════════════════╝
+  -->
+  <div id="intro-logo-wrap">
+    <video
+      id="intro-video"
+      src="YOUR_LOGO_VIDEO.mp4"
+      autoplay
+      muted
+      playsinline
+      preload="auto"
+    ></video>
+  </div>
+  <button id="skip-btn" onclick="finishIntro()">Skip →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SITE WRAPPER
+══════════════════════════════════════ -->
+<div id="site">
+
 <!-- ══ MOBILE MENU ══ -->
 <div id="mob-menu">
-  <nav class="mob-links">
-    <a href="#home" onclick="closeMob()"><span class="mob-dot" style="background:var(--blush)"></span>Home</a>
-    <a href="#categories" onclick="closeMob()"><span class="mob-dot" style="background:var(--sage)"></span>Categories</a>
-    <a href="#products" onclick="closeMob()"><span class="mob-dot" style="background:var(--sky)"></span>Shop</a>
-    <a href="#subscription" onclick="closeMob()"><span class="mob-dot" style="background:var(--amber)"></span>Subscribe</a>
-    <a href="#about" onclick="closeMob()"><span class="mob-dot" style="background:var(--lavender)"></span>About</a>
-    <a href="#contact" onclick="closeMob()"><span class="mob-dot" style="background:var(--blush)"></span>Contact</a>
-  </nav>
-  <button class="mob-cart-btn" onclick="closeMob();openCart()">
-    🛒 View Cart (<span id="mob-cn">0</span> items)
-  </button>
-  <div class="mob-bottom">
-    <a href="#">Instagram</a>
-    <a href="#">Facebook</a>
-    <a href="#">WhatsApp</a>
+  <!-- Header -->
+  <div class="mob-menu-hdr">
+    <div class="mob-menu-brand">Paws <em>&amp;</em> Tails</div>
+    <button class="mob-close-btn" onclick="closeMob()">✕</button>
+  </div>
+
+  <!-- Nav links -->
+  <div class="mob-nav-body">
+    <a class="mob-nav-link" href="#home"         onclick="closeMob()">Home             <span class="mob-nav-arrow">→</span></a>
+    <a class="mob-nav-link" href="#categories"   onclick="closeMob()">Categories       <span class="mob-nav-arrow">→</span></a>
+    <a class="mob-nav-link" href="#products"     onclick="closeMob()">Shop             <span class="mob-nav-arrow">→</span></a>
+    <a class="mob-nav-link" href="#subscription" onclick="closeMob()">Subscribe        <span class="mob-nav-arrow">→</span></a>
+    <a class="mob-nav-link" href="#about"        onclick="closeMob()">About            <span class="mob-nav-arrow">→</span></a>
+    <a class="mob-nav-link" href="#contact"      onclick="closeMob()">Contact          <span class="mob-nav-arrow">→</span></a>
+  </div>
+
+  <!-- Footer: cart + social -->
+  <div class="mob-menu-ftr">
+    <button class="mob-cart-full" onclick="closeMob();openCart()">
+      <span>🛒 &nbsp;View Cart &nbsp;(<span id="mob-cn">0</span> items)</span>
+      <span class="mcf-right">Tap to open →</span>
+    </button>
+    <div class="mob-social-row">
+      <a class="mob-soc-a" href="https://instagram.com" target="_blank">📷 Instagram</a>
+      <a class="mob-soc-a" href="https://facebook.com"  target="_blank">👍 Facebook</a>
+      <a class="mob-soc-a" href="https://wa.me/914712345678" target="_blank">💬 WhatsApp</a>
+    </div>
   </div>
 </div>
 
 <!-- ══ NAVBAR ══ -->
 <nav id="navbar">
-  <a class="nav-logo" href="#home">PawKart<span>.</span></a>
+  <!--
+    ╔═══════════════════════════════════════════════╗
+    ║  NAVBAR LOGO VIDEO (looping, silent)          ║
+    ║  Replace  YOUR_LOGO_VIDEO.mp4  with your file ║
+    ╚═══════════════════════════════════════════════╝
+  -->
+  <a class="nav-logo" href="#home">
+    <!--
+      ╔══════════════════════════════════════╗
+      ║  NAVBAR LOGO IMAGE                   ║
+      ║  Replace YOUR_LOGO.png with your     ║
+      ║  actual logo image file path         ║
+      ╚══════════════════════════════════════╝
+    -->
+    <img
+      class="nav-logo-img"
+      src="YOUR_LOGO.png"
+      alt="Paws & Tails Logo"
+      onerror="this.style.display='none'"
+    />
+    <span class="nav-logo-text">Paws <em>&amp;</em> Tails</span>
+  </a>
 
-  <ul class="nav-links" id="nav-links">
-    <li><a href="#home" data-section="home">Home</a></li>
-    <li><a href="#categories" data-section="categories">Categories</a></li>
-    <li><a href="#products" data-section="products">Shop</a></li>
+  <ul class="nav-links">
+    <li><a href="#home"         data-section="home">Home</a></li>
+    <li><a href="#categories"   data-section="categories">Categories</a></li>
+    <li><a href="#products"     data-section="products">Shop</a></li>
     <li><a href="#subscription" data-section="subscription">Subscribe</a></li>
-    <li><a href="#about" data-section="about">About</a></li>
-    <li><a href="#contact" data-section="contact">Contact</a></li>
+    <li><a href="#about"        data-section="about">About</a></li>
+    <li><a href="#contact"      data-section="contact">Contact</a></li>
   </ul>
 
   <div class="nav-right">
-    <button class="nav-pill" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
-      🔍 Search
+    <!-- Desktop -->
+    <button class="nav-search-btn" title="Search"
+      onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">🔍</button>
+    <button class="nav-cart-btn" onclick="openCart()">
+      🛒 Cart <span class="nav-badge" id="cart-n">0</span>
     </button>
-    <button class="cart-btn" onclick="openCart()">
-      🛒 Cart <span class="cart-badge" id="cart-n">0</span>
+    <!-- Mobile icon-only -->
+    <button class="mob-search-icon" title="Search"
+      onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">🔍</button>
+    <button class="mob-cart-icon" onclick="openCart()">
+      🛒
+      <span class="mob-cart-dot" id="mob-cart-dot">0</span>
     </button>
     <button class="hamburger" id="hbg" onclick="toggleMob()">
       <span></span><span></span><span></span>
@@ -813,30 +984,27 @@ footer{
   </div>
 </nav>
 
-<!-- ══ CART DRAWER ══ -->
-<div id="cart-overlay" onclick="closeCart()"></div>
-<div id="cart-drawer">
+<!-- ══ CART OVERLAY + DRAWER ══ -->
+<div id="cart-ov" onclick="closeCart()"></div>
+<div id="cart-dr">
   <div class="cdh">
     <div>
       <h3>Shopping Cart</h3>
-      <small id="cdh-small">0 items</small>
+      <small id="cdh-sm">0 items</small>
     </div>
     <button class="cdh-x" onclick="closeCart()">✕</button>
   </div>
   <div class="cdbody" id="cdbody">
-    <div class="c-empty">
-      <div class="ce-icon">🛒</div>
-      <p>Your cart is empty</p>
-    </div>
+    <div class="c-empty"><div class="cei">🛒</div><p>Your cart is empty</p></div>
   </div>
   <div class="cfoot" id="cfoot" style="display:none">
-    <div class="ctotal-row">
-      <span class="ctotal-lbl">Subtotal</span>
-      <span class="ctotal-amt" id="ctotal">₹0</span>
+    <div class="ctr">
+      <span class="ctl">Subtotal</span>
+      <span class="cta" id="ctotal">₹0</span>
     </div>
     <div class="cdeliv">🚚 Free delivery in Thiruvananthapuram</div>
-    <button class="ckout-btn" onclick="checkout()">Checkout →</button>
-    <button class="ccont-btn" onclick="closeCart()">Continue Shopping</button>
+    <button class="ckbtn" onclick="checkout()">Checkout →</button>
+    <button class="ccbtn" onclick="closeCart()">Continue Shopping</button>
   </div>
 </div>
 
@@ -844,62 +1012,46 @@ footer{
 <section id="home">
   <div class="hero-l">
     <div class="hero-tag">🐾 Trivandrum's Premier Pet Store</div>
-    <h1 class="hero-h1">
-      Give your pet<br>the <em>very best.</em>
-    </h1>
-    <p class="hero-p">
-      Curated food, toys & essentials for dogs, cats, birds and fish. Sourced for Kerala's climate and delivered to your door.
-    </p>
+    <h1 class="hero-h1">Give your pet<br>the <em>very best.</em></h1>
+    <p class="hero-p">Curated food, toys &amp; essentials for dogs, cats, birds and fish. Sourced for Kerala's climate, delivered to your door.</p>
     <div class="hero-btns">
       <a href="#products" class="btn-ink">Shop Now <span class="arr">→</span></a>
-      <a href="#subscription" class="btn-outline">Subscribe & Save</a>
+      <a href="#subscription" class="btn-out">Subscribe &amp; Save</a>
     </div>
     <div class="hero-trust">
-      <div class="avatars">
-        <div class="av av-dog">🐕</div>
-        <div class="av av-cat">🐈</div>
-        <div class="av av-bird">🦜</div>
-        <div class="av av-fish">🐟</div>
+      <div class="avs">
+        <div class="av" style="background:var(--sage-bg)">🐕</div>
+        <div class="av" style="background:var(--blush-bg)">🐈</div>
+        <div class="av" style="background:var(--amber-bg)">🦜</div>
+        <div class="av" style="background:var(--sky-bg)">🐟</div>
       </div>
-      <div class="trust-txt">
+      <div class="ttxt">
         <strong>2,400+ Happy Families</strong>
         Rated 4.9★ by pet owners in Trivandrum
       </div>
     </div>
   </div>
-
   <div class="hero-r">
-    <div class="hcell span2" style="background:var(--sage-bg);min-height:240px" onclick="jumpFilter('dog')">
-      <span class="em">🐕</span>
-      <div class="hcell-lbl">
-        <div class="hl-t">Premium Dog Collection</div>
-        <div class="hl-s">Food, toys & accessories</div>
-      </div>
-      <div class="hcell-badge">70+ Products</div>
+    <div class="hcell sp2" style="background:var(--sage-bg)" onclick="jumpFilter('dog')">
+      <span class="hce">🐕</span>
+      <div class="hlbl"><div class="hlt">Premium Dog Collection</div><div class="hls">Food, toys &amp; accessories</div></div>
+      <div class="hbadge">70+ Products</div>
     </div>
-    <div class="hcell" style="background:var(--blush-bg);min-height:180px" onclick="jumpFilter('cat')">
-      <span class="em">🐈</span>
-      <div class="hcell-lbl">
-        <div class="hl-t">For Cats</div>
-        <div class="hl-s">4 products</div>
-      </div>
+    <div class="hcell" style="background:var(--blush-bg)" onclick="jumpFilter('cat')">
+      <span class="hce">🐈</span>
+      <div class="hlbl"><div class="hlt">For Cats</div><div class="hls">4 products</div></div>
     </div>
-    <div class="hcell" style="background:var(--sky-bg);min-height:180px" onclick="jumpFilter('fish')">
-      <span class="em">🐟</span>
-      <div class="hcell-lbl">
-        <div class="hl-t">For Fish</div>
-        <div class="hl-s">3 products</div>
-      </div>
+    <div class="hcell" style="background:var(--sky-bg)" onclick="jumpFilter('fish')">
+      <span class="hce">🐟</span>
+      <div class="hlbl"><div class="hlt">For Fish</div><div class="hls">3 products</div></div>
     </div>
   </div>
 </section>
 
 <!-- ══ TICKER ══ -->
-<div class="ticker">
-  <div class="ticker-t" id="ticker-t"></div>
-</div>
+<div class="ticker"><div class="ticker-t" id="ticker-t"></div></div>
 
-<!-- ══ CATEGORIES ══ -->
+<!-- ══ CATEGORIES — 4 IN ONE ROW ══ -->
 <section class="sec" id="categories" style="background:var(--white)">
   <div class="sh rv">
     <div class="sh-row">
@@ -908,22 +1060,24 @@ footer{
     </div>
     <p class="sh-sub">Explore our curated collections for every type of pet</p>
   </div>
-  <div class="cat-grid">
-    <div class="cat-card rv" onclick="jumpFilter('dog')" style="transition-delay:.00s">
-      <div class="cat-bg" style="background:var(--sage-bg)"><span class="cat-em">🐕</span></div>
-      <div class="cat-ov"><div class="cat-nm">Dogs</div><div class="cat-ct">4 products</div></div>
-    </div>
-    <div class="cat-card rv" onclick="jumpFilter('cat')" style="transition-delay:.07s">
-      <div class="cat-bg" style="background:var(--blush-bg)"><span class="cat-em">🐈</span></div>
-      <div class="cat-ov"><div class="cat-nm">Cats</div><div class="cat-ct">4 products</div></div>
-    </div>
-    <div class="cat-card rv" onclick="jumpFilter('bird')" style="transition-delay:.14s">
-      <div class="cat-bg" style="background:var(--amber-bg)"><span class="cat-em">🦜</span></div>
-      <div class="cat-ov"><div class="cat-nm">Birds</div><div class="cat-ct">3 products</div></div>
-    </div>
-    <div class="cat-card rv" onclick="jumpFilter('fish')" style="transition-delay:.21s">
-      <div class="cat-bg" style="background:var(--sky-bg)"><span class="cat-em">🐟</span></div>
-      <div class="cat-ov"><div class="cat-nm">Fish</div><div class="cat-ct">3 products</div></div>
+  <div class="cat-scroll">
+    <div class="cat-grid">
+      <div class="cat-card rv" onclick="jumpFilter('dog')">
+        <div class="cat-bg" style="background:var(--sage-bg)"><span class="cate">🐕</span></div>
+        <div class="cat-ov"><div class="cat-nm">Dogs</div><div class="cat-ct">4 products</div></div>
+      </div>
+      <div class="cat-card rv" onclick="jumpFilter('cat')" style="transition-delay:.07s">
+        <div class="cat-bg" style="background:var(--blush-bg)"><span class="cate">🐈</span></div>
+        <div class="cat-ov"><div class="cat-nm">Cats</div><div class="cat-ct">4 products</div></div>
+      </div>
+      <div class="cat-card rv" onclick="jumpFilter('bird')" style="transition-delay:.14s">
+        <div class="cat-bg" style="background:var(--amber-bg)"><span class="cate">🦜</span></div>
+        <div class="cat-ov"><div class="cat-nm">Birds</div><div class="cat-ct">3 products</div></div>
+      </div>
+      <div class="cat-card rv" onclick="jumpFilter('fish')" style="transition-delay:.21s">
+        <div class="cat-bg" style="background:var(--sky-bg)"><span class="cate">🐟</span></div>
+        <div class="cat-ov"><div class="cat-nm">Fish</div><div class="cat-ct">3 products</div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -937,7 +1091,7 @@ footer{
     </div>
     <p class="sh-sub">Kerala-sourced, vet-approved essentials for your pets</p>
   </div>
-  <div class="filter-bar" id="filter-bar">
+  <div class="filter-bar">
     <button class="fp on" onclick="applyF('all',this)">All Products</button>
     <button class="fp" onclick="applyF('dog',this)">🐕 Dogs</button>
     <button class="fp" onclick="applyF('cat',this)">🐈 Cats</button>
@@ -951,34 +1105,32 @@ footer{
 <!-- ══ PROMO BANNER ══ -->
 <div class="promo rv">
   <div class="promo-l">
-    <div class="chip chip-blush" style="margin-bottom:16px">Limited Time</div>
-    <h3>Subscribe &<br><em>save up to 25%</em></h3>
+    <div class="promo-chip">Limited Time</div>
+    <h3>Subscribe &amp;<br><em>save up to 25%</em></h3>
     <p>Choose a plan and get your pet's food delivered automatically. No hassle, no running out.</p>
-    <a href="#subscription" class="btn-ink" style="width:fit-content">
-      View Plans <span class="arr">→</span>
-    </a>
+    <a href="#subscription" class="btn-ink" style="width:fit-content">View Plans <span class="arr">→</span></a>
     <p class="promo-note">Min. order ₹499 · Cancel anytime</p>
   </div>
   <div class="promo-r">
-    <div class="promo-pct-wrap">
+    <div class="promo-pct-w">
       <div class="promo-pct">25%</div>
-      <div class="promo-pct-sub">Off All Plans</div>
+      <div class="promo-pct-s">Off All Plans</div>
     </div>
-    <div class="promo-tag">Subscribe Now</div>
+    <div class="promo-lbl">Subscribe Now</div>
   </div>
 </div>
 
 <!-- ══ SUBSCRIPTION ══ -->
 <section class="sec" id="subscription" style="background:var(--white)">
   <div class="sh rv">
-    <div class="sh-row"><h2 class="sh-ttl">Subscribe & Save</h2></div>
-    <p class="sh-sub">Hassle-free pet food delivery to your door</p>
+    <div class="sh-row"><h2 class="sh-ttl">Subscribe &amp; Save</h2></div>
+    <p class="sh-sub">Hassle-free pet food delivery to your door in Thiruvananthapuram</p>
   </div>
   <div class="plans">
     <div class="plan rv">
       <div class="plan-badge">Monthly</div>
-      <div class="plan-name">Paw Basic</div>
-      <div class="plan-price">₹499</div>
+      <div class="plan-nm">Paw Basic</div>
+      <div class="plan-pr">₹499</div>
       <div class="plan-mo">per month · 1 pet</div>
       <ul class="plan-ul">
         <li>Monthly food delivery</li>
@@ -990,8 +1142,8 @@ footer{
     </div>
     <div class="plan star rv" style="transition-delay:.1s">
       <div class="plan-badge">Most Popular</div>
-      <div class="plan-name">Paw Plus</div>
-      <div class="plan-price">₹899</div>
+      <div class="plan-nm">Paw Plus</div>
+      <div class="plan-pr">₹899</div>
       <div class="plan-mo">per month · up to 2 pets</div>
       <ul class="plan-ul">
         <li>Bi-monthly deliveries</li>
@@ -1004,8 +1156,8 @@ footer{
     </div>
     <div class="plan rv" style="transition-delay:.2s">
       <div class="plan-badge">Premium</div>
-      <div class="plan-name">Paw Family</div>
-      <div class="plan-price">₹1,499</div>
+      <div class="plan-nm">Paw Family</div>
+      <div class="plan-pr">₹1,499</div>
       <div class="plan-mo">per month · unlimited pets</div>
       <ul class="plan-ul">
         <li>Weekly deliveries</li>
@@ -1017,9 +1169,7 @@ footer{
       <button class="plan-btn" onclick="subPick('Family','₹1,499')">Get Started</button>
     </div>
   </div>
-  <p style="margin-top:18px;font-size:12px;color:var(--ink-ghost)">
-    No subscription? <a href="#products" style="color:var(--ink);font-weight:600;text-decoration:underline">Browse all products →</a>
-  </p>
+  <p style="margin-top:18px;font-size:12px;color:var(--ink4)">No subscription? <a href="#products" style="color:var(--ink);font-weight:600;text-decoration:underline">Browse all products →</a></p>
 </section>
 
 <!-- ══ FEATURED COLLECTIONS ══ -->
@@ -1032,25 +1182,19 @@ footer{
   </div>
   <div class="coll-grid">
     <div class="cc2 tall rv" onclick="jumpFilter('dog')">
-      <div class="ccimg" style="background:var(--sage-bg);min-height:432px">
-        <span style="font-size:100px">🐕</span>
-      </div>
-      <div class="ccov"><h4>Dog Full Set Series</h4><p>Food, toys & accessories</p></div>
+      <div class="ccimg" style="background:var(--sage-bg);min-height:432px"><span style="font-size:100px">🐕</span></div>
+      <div class="ccov"><h4>Dog Full Set Series</h4><p>Food, toys &amp; accessories</p></div>
       <div class="ccarr">→</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="cc2 rv" onclick="jumpFilter('cat')" style="transition-delay:.1s">
-        <div class="ccimg" style="background:var(--blush-bg);min-height:200px">
-          <span style="font-size:80px">🐈</span>
-        </div>
+        <div class="ccimg" style="background:var(--blush-bg);min-height:200px"><span style="font-size:80px">🐈</span></div>
         <div class="ccov"><h4>Cat Collection</h4><p>Curated for indoor cats</p></div>
         <div class="ccarr">→</div>
       </div>
       <div class="cc2 rv" onclick="jumpFilter('bird')" style="transition-delay:.2s">
-        <div class="ccimg" style="background:var(--amber-bg);min-height:200px">
-          <span style="font-size:80px">🦜</span>
-        </div>
-        <div class="ccov"><h4>Bird & Fish Essentials</h4><p>Top picks for tropical pets</p></div>
+        <div class="ccimg" style="background:var(--amber-bg);min-height:200px"><span style="font-size:80px">🦜</span></div>
+        <div class="ccov"><h4>Bird &amp; Fish Essentials</h4><p>Top picks for tropical pets</p></div>
         <div class="ccarr">→</div>
       </div>
     </div>
@@ -1063,7 +1207,7 @@ footer{
   <div class="sdiv"></div>
   <div class="si rv"><div class="si-n">70+</div><div class="si-l">Products</div></div>
   <div class="sdiv"></div>
-  <div class="si rv"><div class="si-n">4.9★</div><div class="si-l">Average Rating</div></div>
+  <div class="si rv"><div class="si-n">4.9★</div><div class="si-l">Avg Rating</div></div>
   <div class="sdiv"></div>
   <div class="si rv"><div class="si-n">Same Day</div><div class="si-l">TVM Delivery</div></div>
 </div>
@@ -1075,18 +1219,18 @@ footer{
       <div class="about-bg-em">🐾</div>
       <div class="about-q-box">
         <p class="about-q">"Because every pet in Kerala deserves the very best care."</p>
-        <p class="about-attr">PawKart · Thiruvananthapuram</p>
+        <p class="about-attr">Paws &amp; Tails · Thiruvananthapuram</p>
       </div>
     </div>
     <div>
       <div class="sh rv" style="margin-bottom:24px">
-        <div class="sh-ttl">Why Choose PawKart?</div>
+        <div class="sh-ttl">Why Choose Paws &amp; Tails?</div>
         <p class="sh-sub" style="margin-top:6px">Thoughtfully curated for your pet's wellbeing.</p>
       </div>
       <div class="why-list">
         <div class="wi rv">
           <div class="wi-ico sage">🌿</div>
-          <div><h4>Climate-Right Nutrition</h4><p>Products tailored for Kerala's tropical climate — keeping your pets cool, hydrated and healthy.</p></div>
+          <div><h4>Climate-Right Nutrition</h4><p>Products tailored for Kerala's tropical climate — keeping pets cool, hydrated and healthy.</p></div>
         </div>
         <div class="wi rv" style="transition-delay:.08s">
           <div class="wi-ico sky">🔄</div>
@@ -1094,7 +1238,7 @@ footer{
         </div>
         <div class="wi rv" style="transition-delay:.16s">
           <div class="wi-ico blush">🚚</div>
-          <div><h4>Same-Day Delivery in Trivandrum</h4><p>Order before 2pm, receive it the same day anywhere in Thiruvananthapuram.</p></div>
+          <div><h4>Same-Day Delivery</h4><p>Order before 2pm, receive it the same day anywhere in Thiruvananthapuram.</p></div>
         </div>
         <div class="wi rv" style="transition-delay:.24s">
           <div class="wi-ico amber">🩺</div>
@@ -1109,44 +1253,58 @@ footer{
 <section class="sec" id="contact">
   <div class="sh rv">
     <div class="sh-row"><h2 class="sh-ttl">Get In Touch</h2></div>
-    <p class="sh-sub">We're right here in Trivandrum. Say hello!</p>
+    <p class="sh-sub">Have a question? We'd love to hear from you.</p>
   </div>
   <div class="contact-card rv">
     <div class="contact-top">
-      <h2>We're right here<br>in <em>Trivandrum.</em></h2>
-      <p>Visit us, call, or drop a message — we respond the same day.</p>
+      <h2>Say hello to<br><em>Paws &amp; Tails.</em></h2>
+      <p>Drop us a message or find us on social — we respond the same day.</p>
     </div>
     <div class="cgrid">
-      <div class="ccol">
-        <h4>Address</h4>
-        <p>PawKart Pet Store</p>
-        <p>MG Road, Thampanoor</p>
-        <p>Thiruvananthapuram</p>
-        <p>Kerala — 695 001</p>
-        <br>
-        <h4>Working Hours</h4>
-        <p>Mon–Sat &nbsp;9am – 8pm</p>
-        <p>Sunday &nbsp;&nbsp;10am – 6pm</p>
-      </div>
-      <div class="ccol">
-        <h4>Contact</h4>
-        <a href="tel:+914712345678">+91 471 234 5678</a>
-        <a href="mailto:hello@pawkart.in">hello@pawkart.in</a>
-        <a href="mailto:orders@pawkart.in">orders@pawkart.in</a>
-        <br>
-        <h4 style="margin-top:16px">Follow Us</h4>
-        <a href="#">Instagram</a>
-        <a href="#">Facebook</a>
-        <a href="https://wa.me/914712345678" target="_blank">WhatsApp</a>
-      </div>
-      <div class="ccol">
+      <!-- LEFT: Message form -->
+      <div class="cleft">
         <h4>Send a Message</h4>
         <div class="cform">
-          <input class="cinp" type="text" id="cn" placeholder="Your name">
-          <input class="cinp" type="email" id="ce" placeholder="Email address">
-          <input class="cinp" type="tel" id="cp" placeholder="Phone number">
-          <textarea class="cinp" id="cm" rows="3" placeholder="How can we help your pet?" style="resize:vertical"></textarea>
-          <button class="csend" onclick="sendMsg()">Send Message</button>
+          <input  class="cinp" type="text"  id="cn" placeholder="Your name">
+          <input  class="cinp" type="email" id="ce" placeholder="Email address">
+          <input  class="cinp" type="tel"   id="cp" placeholder="Phone number">
+          <textarea class="cinp" id="cm" rows="4" placeholder="How can we help your pet?" style="resize:vertical"></textarea>
+          <button class="csend" onclick="sendMsg()">Send Message →</button>
+        </div>
+      </div>
+      <!-- RIGHT: Contact + Social -->
+      <div class="cright">
+        <div class="cright-top">
+          <div class="cright-col">
+            <h4>Contact Us</h4>
+            <a href="tel:+914712345678">+91 471 234 5678</a>
+            <a href="/cdn-cgi/l/email-protection#2c44494040436c5c4d5b5f4d4248584d45405f024542"><span class="__cf_email__" data-cfemail="274f424b4b48675746505446494353464e4b54094e49">[email&#160;protected]</span></a>
+            <a href="/cdn-cgi/l/email-protection#c9a6bbadacbbba89b9a8bebaa8a7adbda8a0a5bae7a0a7"><span class="__cf_email__" data-cfemail="325d40565740417242534541535c5646535b5e411c5b5c">[email&#160;protected]</span></a>
+            <br>
+            <h4 style="margin-top:8px">Delivery Hours</h4>
+            <p>Mon – Sat &nbsp;&nbsp;9am – 8pm</p>
+            <p>Sunday &nbsp;&nbsp;&nbsp;10am – 6pm</p>
+          </div>
+          <div class="cright-col">
+            <h4>Follow Us</h4>
+            <a href="https://instagram.com" target="_blank" class="soc-link">
+              <span class="soc-dot" style="background:#e1306c"></span>Instagram
+            </a>
+            <a href="https://facebook.com" target="_blank" class="soc-link">
+              <span class="soc-dot" style="background:#1877f2"></span>Facebook
+            </a>
+            <a href="https://wa.me/914712345678" target="_blank" class="soc-link">
+              <span class="soc-dot" style="background:#25d366"></span>WhatsApp
+            </a>
+            <a href="https://youtube.com" target="_blank" class="soc-link">
+              <span class="soc-dot" style="background:#ff0000"></span>YouTube
+            </a>
+          </div>
+        </div>
+        <div class="cbrand">
+          <div class="cbrand-icon">🐾</div>
+          <div class="cbrand-name">Paws <em>&amp;</em> Tails</div>
+          <div class="cbrand-sub">Premium Pet Store · Thiruvananthapuram, Kerala</div>
         </div>
       </div>
     </div>
@@ -1155,112 +1313,164 @@ footer{
 
 <!-- ══ FOOTER ══ -->
 <footer>
-  <div class="fl">PawKart<span>.</span></div>
-  <div class="fc">© 2025 PawKart · Thiruvananthapuram, Kerala · All rights reserved</div>
+  <div class="fl">Paws <em>&amp;</em> Tails</div>
+  <div class="fc">© 2025 Paws &amp; Tails · Thiruvananthapuram, Kerala · All rights reserved</div>
   <div class="flinks">
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
-    <a href="#">Instagram</a>
+    <a href="https://instagram.com" target="_blank">Instagram</a>
     <a href="#">Privacy</a>
   </div>
 </footer>
 
+</div><!-- /site -->
+
 <div id="toast"></div>
 
-<!-- ══ JS ══ -->
-<script>
-/* ───────── PRODUCTS DATA ───────── */
-const ANIMALCOLOR = {
-  dog:  {bg:'var(--sage-bg)',  label:'sage',  text:'var(--sage)'},
-  cat:  {bg:'var(--blush-bg)', label:'blush', text:'var(--blush)'},
-  bird: {bg:'var(--amber-bg)', label:'amber', text:'var(--amber)'},
-  fish: {bg:'var(--sky-bg)',   label:'sky',   text:'var(--sky)'},
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ══════════════════════
+   INTRO ANIMATION
+══════════════════════ */
+(function(){
+  const intro = document.getElementById('intro');
+  const video = document.getElementById('intro-video');
+  const site  = document.getElementById('site');
+
+  function finishIntro(){
+    if(video){ video.pause(); }
+    intro.classList.add('fade-out');
+    site.classList.add('visible');
+    setTimeout(()=>{ intro.style.display='none'; }, 700);
+  }
+
+  // Expose to HTML onclick (skip button)
+  window.finishIntro = finishIntro;
+
+  if(video){
+    video.addEventListener('loadedmetadata', ()=>{
+      // Clamp to 5 seconds max
+      video.play().catch(()=>{});
+    });
+
+    // Stop at 5 seconds
+    video.addEventListener('timeupdate', ()=>{
+      if(video.currentTime >= 5){ finishIntro(); }
+    });
+
+    // Also finish if video ends before 5s
+    video.addEventListener('ended', finishIntro);
+
+    // If video can't load, skip after 500ms
+    video.addEventListener('error', ()=>setTimeout(finishIntro, 500));
+
+    // Hard fallback: always proceed after 6s
+    setTimeout(finishIntro, 6000);
+  } else {
+    setTimeout(finishIntro, 300);
+  }
+})();
+
+/* ══════════════════════
+   PRODUCTS DATA
+══════════════════════ */
+const AC = {
+  dog: {bg:'var(--sage-bg)', text:'var(--sage)'},
+  cat: {bg:'var(--blush-bg)',text:'var(--blush)'},
+  bird:{bg:'var(--amber-bg)',text:'var(--amber)'},
+  fish:{bg:'var(--sky-bg)',  text:'var(--sky)'},
 };
 const PRODS = [
-  {id:1,  name:'Royal Canin Maxi Adult',   animal:'dog',  type:'food', em:'🦴', price:2150, badge:'best', bl:'Best Seller', desc:'Large breed dry food, 15kg'},
-  {id:2,  name:'Pedigree Wet Food Pouch',  animal:'dog',  type:'food', em:'🥩', price:85,   badge:'sub',  bl:'Subscribe',   desc:'Chicken & liver jelly, 12-pack'},
-  {id:3,  name:'Drools Puppy Starter',     animal:'dog',  type:'food', em:'🌾', price:650,  badge:'new',  bl:'New',         desc:'Puppy starter food, 3kg'},
-  {id:4,  name:'Rope Tug Toy Set',         animal:'dog',  type:'toy',  em:'🎾', price:349,  badge:'new',  bl:'New',         desc:'Durable cotton rope, set of 3'},
-  {id:5,  name:'Whiskas Dry Cat Food',     animal:'cat',  type:'food', em:'🐠', price:750,  badge:'best', bl:'Best Seller', desc:'Ocean fish flavour, 1.2kg'},
-  {id:6,  name:'Felix Wet Cat Food',       animal:'cat',  type:'food', em:'🥣', price:60,   badge:'sub',  bl:'Subscribe',   desc:'Jelly sachets, 12-pack'},
-  {id:7,  name:'Me-O Tuna Pouches',        animal:'cat',  type:'food', em:'🐟', price:45,   badge:'new',  bl:'New',         desc:'Tuna in gravy, 80g pouch'},
-  {id:8,  name:'Cat Feather Wand',         animal:'cat',  type:'toy',  em:'🪶', price:199,  badge:'new',  bl:'New',         desc:'Interactive feather toy'},
-  {id:9,  name:'Taiyo Parrot Mix',         animal:'bird', type:'food', em:'🌻', price:320,  badge:'best', bl:'Best Seller', desc:'Premium seed mix, 500g'},
-  {id:10, name:'Budgie Millet Spray',      animal:'bird', type:'food', em:'🌱', price:80,   badge:'sub',  bl:'Subscribe',   desc:'Natural millet sprays, 5-pack'},
-  {id:11, name:'Bird Swing & Perch',       animal:'bird', type:'toy',  em:'🪵', price:249,  badge:'new',  bl:'New',         desc:'Wooden swing with bell'},
-  {id:12, name:'Hikari Goldfish Pellets',  animal:'fish', type:'food', em:'🫧', price:450,  badge:'best', bl:'Best Seller', desc:'Colour-enhancing pellets, 500g'},
-  {id:13, name:'TetraMin Tropical Flakes', animal:'fish', type:'food', em:'🌊', price:380,  badge:'sub',  bl:'Subscribe',   desc:'Flake food for tropical fish'},
-  {id:14, name:'Dog Sniff Mat',            animal:'dog',  type:'toy',  em:'🧩', price:599,  badge:'new',  bl:'New',         desc:'Mental stimulation mat'},
+  {id:1, name:'Royal Canin Maxi Adult',   animal:'dog', type:'food',em:'🦴',price:2150,badge:'best',bl:'Best Seller',desc:'Large breed dry food, 15kg'},
+  {id:2, name:'Pedigree Wet Food Pouch',  animal:'dog', type:'food',em:'🥩',price:85,  badge:'sub', bl:'Subscribe',  desc:'Chicken & liver jelly, 12-pack'},
+  {id:3, name:'Drools Puppy Starter',     animal:'dog', type:'food',em:'🌾',price:650, badge:'new', bl:'New',        desc:'Puppy starter food, 3kg'},
+  {id:4, name:'Rope Tug Toy Set',         animal:'dog', type:'toy', em:'🎾',price:349, badge:'new', bl:'New',        desc:'Durable cotton rope, set of 3'},
+  {id:5, name:'Whiskas Dry Cat Food',     animal:'cat', type:'food',em:'🐠',price:750, badge:'best',bl:'Best Seller',desc:'Ocean fish flavour, 1.2kg'},
+  {id:6, name:'Felix Wet Cat Food',       animal:'cat', type:'food',em:'🥣',price:60,  badge:'sub', bl:'Subscribe',  desc:'Jelly sachets, 12-pack'},
+  {id:7, name:'Me-O Tuna Pouches',        animal:'cat', type:'food',em:'🐟',price:45,  badge:'new', bl:'New',        desc:'Tuna in gravy, 80g pouch'},
+  {id:8, name:'Cat Feather Wand',         animal:'cat', type:'toy', em:'🪶',price:199, badge:'new', bl:'New',        desc:'Interactive feather toy'},
+  {id:9, name:'Taiyo Parrot Mix',         animal:'bird',type:'food',em:'🌻',price:320, badge:'best',bl:'Best Seller',desc:'Premium seed mix, 500g'},
+  {id:10,name:'Budgie Millet Spray',      animal:'bird',type:'food',em:'🌱',price:80,  badge:'sub', bl:'Subscribe',  desc:'Natural millet sprays, 5-pack'},
+  {id:11,name:'Bird Swing & Perch',       animal:'bird',type:'toy', em:'🪵',price:249, badge:'new', bl:'New',        desc:'Wooden swing with bell'},
+  {id:12,name:'Hikari Goldfish Pellets',  animal:'fish',type:'food',em:'🫧',price:450, badge:'best',bl:'Best Seller',desc:'Colour-enhancing pellets, 500g'},
+  {id:13,name:'TetraMin Tropical Flakes', animal:'fish',type:'food',em:'🌊',price:380, badge:'sub', bl:'Subscribe',  desc:'Flake food for tropical fish'},
+  {id:14,name:'Dog Sniff Mat',            animal:'dog', type:'toy', em:'🧩',price:599, badge:'new', bl:'New',        desc:'Mental stimulation mat'},
 ];
 
-/* ───────── CART ───────── */
+/* ══════════════════════
+   CART
+══════════════════════ */
 let cart = [];
-const fmt = n => '₹'+n.toLocaleString('en-IN');
+const fmt = n => '₹' + n.toLocaleString('en-IN');
 
-function addToCart(id) {
+function addToCart(id){
   const p = PRODS.find(x=>x.id===id);
   if(!p) return;
   const ex = cart.find(x=>x.id===id);
-  if(ex) ex.qty++;
-  else cart.push({...p, qty:1});
+  if(ex) ex.qty++; else cart.push({...p,qty:1});
   syncCart();
   showToast(`✓ ${p.name} added to cart`);
   openCart();
 }
-function removeFromCart(id) {
+function removeFromCart(id){
   cart = cart.filter(x=>x.id!==id);
   syncCart(); renderCart();
 }
-function changeQty(id, d) {
+function chgQty(id,d){
   const item = cart.find(x=>x.id===id);
   if(!item) return;
   item.qty += d;
   if(item.qty<=0){ removeFromCart(id); return; }
   syncCart(); renderCart();
 }
-function syncCart() {
+function syncCart(){
   const n = cart.reduce((s,x)=>s+x.qty,0);
-  document.getElementById('cart-n').textContent = n;
-  document.getElementById('mob-cn').textContent = n;
-  document.getElementById('cdh-small').textContent = `${n} item${n!==1?'s':''}`;
+  document.getElementById('cart-n').textContent       = n;
+  document.getElementById('mob-cn').textContent       = n;
+  document.getElementById('mob-cart-dot').textContent = n;
+  document.getElementById('cdh-sm').textContent       = `${n} item${n!==1?'s':''}`;
   renderCart();
 }
-function renderCart() {
+function renderCart(){
   const body = document.getElementById('cdbody');
   const foot = document.getElementById('cfoot');
-  if(!cart.length) {
-    body.innerHTML=`<div class="c-empty"><div class="ce-icon">🛒</div><p>Your cart is empty</p></div>`;
+  if(!cart.length){
+    body.innerHTML=`<div class="c-empty"><div class="cei">🛒</div><p>Your cart is empty</p></div>`;
     foot.style.display='none'; return;
   }
   foot.style.display='block';
   document.getElementById('ctotal').textContent = fmt(cart.reduce((s,x)=>s+x.price*x.qty,0));
-  const col = id => { const p=PRODS.find(x=>x.id===id); return p ? ANIMALCOLOR[p.animal].bg : 'var(--bg)'; };
-  body.innerHTML = cart.map(item=>`
+  body.innerHTML = cart.map(item=>{
+    const col = AC[item.animal]?.bg||'var(--bg)';
+    return `
     <div class="citem">
-      <div class="cthumb" style="background:${col(item.id)}">${item.em}</div>
+      <div class="cthumb" style="background:${col}">${item.em}</div>
       <div>
-        <div class="cname">${item.name}</div>
-        <div class="cmeta">${item.desc}</div>
+        <div class="cnm">${item.name}</div>
+        <div class="cmt">${item.desc}</div>
         <div class="cqty">
-          <button class="qbtn" onclick="changeQty(${item.id},-1)">−</button>
-          <span class="qnum">${item.qty}</span>
-          <button class="qbtn" onclick="changeQty(${item.id},1)">+</button>
+          <button class="qb" onclick="chgQty(${item.id},-1)">−</button>
+          <span class="qn">${item.qty}</span>
+          <button class="qb" onclick="chgQty(${item.id},1)">+</button>
         </div>
       </div>
-      <div class="cside">
+      <div class="csd">
         <button class="cdel" onclick="removeFromCart(${item.id})">✕</button>
-        <div class="cprice">${fmt(item.price*item.qty)}</div>
+        <div class="cpr">${fmt(item.price*item.qty)}</div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function openCart(){
-  document.getElementById('cart-drawer').classList.add('open');
-  document.getElementById('cart-overlay').classList.add('open');
+  document.getElementById('cart-dr').classList.add('open');
+  document.getElementById('cart-ov').classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeCart(){
-  document.getElementById('cart-drawer').classList.remove('open');
-  document.getElementById('cart-overlay').classList.remove('open');
+  document.getElementById('cart-dr').classList.remove('open');
+  document.getElementById('cart-ov').classList.remove('open');
   document.body.style.overflow='';
 }
 function checkout(){
@@ -1270,15 +1480,16 @@ function checkout(){
   showToast(`🎉 Order placed! Total: ${fmt(t)}. We'll call to confirm.`);
 }
 
-/* ───────── PRODUCTS RENDER ───────── */
-function renderProds(filter) {
+/* ══════════════════════
+   PRODUCTS RENDER
+══════════════════════ */
+function renderProds(filter){
   const list = filter==='all' ? PRODS
     : filter==='toy' ? PRODS.filter(p=>p.type==='toy')
     : PRODS.filter(p=>p.animal===filter);
-
   const g = document.getElementById('prod-grid');
-  g.innerHTML = list.map(p => {
-    const col = ANIMALCOLOR[p.animal];
+  g.innerHTML = list.map(p=>{
+    const col = AC[p.animal]||{bg:'var(--bg)',text:'var(--ink4)'};
     return `
     <div class="pcard">
       <div class="pimg" style="background:${col.bg}">
@@ -1287,15 +1498,15 @@ function renderProds(filter) {
       </div>
       <div class="pbody">
         <div class="panim" style="color:${col.text}">${p.animal} · ${p.type}</div>
-        <div class="pname">${p.name}</div>
-        <div class="pdesc">${p.desc}</div>
+        <div class="pnm">${p.name}</div>
+        <div class="pds">${p.desc}</div>
         <div class="pfoot">
-          <div class="pprice">${fmt(p.price)}</div>
+          <div class="ppr">${fmt(p.price)}</div>
           <button class="padd" onclick="addToCart(${p.id})">+</button>
         </div>
       </div>
-    </div>`}).join('');
-
+    </div>`;
+  }).join('');
   setTimeout(()=>{
     g.querySelectorAll('.pcard').forEach((el,i)=>{
       el.style.cssText=`opacity:0;transform:translateY(12px);transition:opacity .3s ${i*30}ms ease,transform .3s ${i*30}ms ease`;
@@ -1303,14 +1514,12 @@ function renderProds(filter) {
     });
   },10);
 }
-
-function applyF(filter, btn) {
+function applyF(filter,btn){
   document.querySelectorAll('.fp').forEach(b=>b.classList.remove('on'));
   if(btn) btn.classList.add('on');
   renderProds(filter);
 }
-
-function jumpFilter(animal) {
+function jumpFilter(animal){
   document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'});
   setTimeout(()=>{
     const btn=[...document.querySelectorAll('.fp')].find(b=>b.textContent.toLowerCase().includes(animal));
@@ -1318,28 +1527,34 @@ function jumpFilter(animal) {
   },500);
 }
 
-/* ───────── SUBSCRIPTION ───────── */
+/* ══════════════════════
+   SUBSCRIPTION
+══════════════════════ */
 function subPick(plan,price){
   showToast(`✓ ${plan} plan — ${price}/month selected!`);
 }
 
-/* ───────── CONTACT ───────── */
+/* ══════════════════════
+   CONTACT FORM
+══════════════════════ */
 function sendMsg(){
   const n=document.getElementById('cn').value.trim();
   const e=document.getElementById('ce').value.trim();
   if(!n||!e){ showToast('Please fill name & email.'); return; }
   ['cn','ce','cp','cm'].forEach(id=>document.getElementById(id).value='');
-  showToast('✉️ Message sent! We\'ll reply soon.');
+  showToast('✉️ Message sent! We\'ll reply within a few hours.');
 }
 
-/* ───────── MOBILE MENU ───────── */
+/* ══════════════════════
+   MOBILE MENU
+══════════════════════ */
 function toggleMob(){
   const m=document.getElementById('mob-menu');
   const h=document.getElementById('hbg');
-  const opening = !m.classList.contains('open');
+  const opening=!m.classList.contains('open');
   m.classList.toggle('open');
   h.classList.toggle('open');
-  document.body.style.overflow = opening ? 'hidden' : '';
+  document.body.style.overflow=opening?'hidden':'';
 }
 function closeMob(){
   document.getElementById('mob-menu').classList.remove('open');
@@ -1347,7 +1562,9 @@ function closeMob(){
   document.body.style.overflow='';
 }
 
-/* ───────── TOAST ───────── */
+/* ══════════════════════
+   TOAST
+══════════════════════ */
 let tt;
 function showToast(msg){
   const el=document.getElementById('toast');
@@ -1355,7 +1572,9 @@ function showToast(msg){
   clearTimeout(tt); tt=setTimeout(()=>el.classList.remove('show'),3000);
 }
 
-/* ───────── TICKER ───────── */
+/* ══════════════════════
+   TICKER
+══════════════════════ */
 const tData=[
   'Free delivery in Trivandrum','·','Subscribe & save up to 25%','·',
   'Same-day delivery available','·','Vet-approved products','·',
@@ -1366,57 +1585,50 @@ const tData=[
 ];
 document.getElementById('ticker-t').innerHTML=tData.map(t=>`<span>${t}</span>`).join('');
 
-/* ───────── WORKING NAVBAR — ACTIVE LINK + SCROLL ───────── */
-const SECTIONS = ['home','categories','products','subscription','collections','about','contact'];
-
-function updateNavActive(){
-  const scrollY = window.scrollY + 80;
-  let current = 'home';
-
-  SECTIONS.forEach(id=>{
-    const el = document.getElementById(id);
-    if(el && el.offsetTop <= scrollY) current = id;
-  });
-
+/* ══════════════════════
+   ACTIVE NAV + SMOOTH SCROLL
+══════════════════════ */
+const SECS=['home','categories','products','subscription','collections','about','contact'];
+function updateActive(){
+  const y=window.scrollY+80; let cur='home';
+  SECS.forEach(id=>{ const el=document.getElementById(id); if(el&&el.offsetTop<=y) cur=id; });
   document.querySelectorAll('.nav-links a').forEach(a=>{
-    const sec = a.getAttribute('data-section');
-    a.classList.toggle('active', sec === current);
+    a.classList.toggle('active', a.getAttribute('data-section')===cur);
   });
 }
-
 window.addEventListener('scroll',()=>{
-  // Scrolled shadow
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY>10);
-  // Active nav link
-  updateNavActive();
-}, {passive:true});
-
-/* Smooth scroll for ALL anchor nav clicks */
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>10);
+  updateActive();
+},{passive:true});
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click', e=>{
-    const target = document.querySelector(a.getAttribute('href'));
-    if(target){
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){
       e.preventDefault();
-      const offset = target.getBoundingClientRect().top + window.scrollY - (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))||62);
-      window.scrollTo({top: offset, behavior:'smooth'});
+      const navH=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))||62;
+      window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-navH,behavior:'smooth'});
     }
   });
 });
 
-/* ───────── SCROLL REVEAL ───────── */
+/* ══════════════════════
+   SCROLL REVEAL
+══════════════════════ */
 const obs=new IntersectionObserver(es=>{
-  es.forEach(e=>{if(e.isIntersecting) e.target.classList.add('vis');});
+  es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); });
 },{threshold:.1});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-/* ───────── NAV SCROLL (close mob on resize) ───────── */
-window.addEventListener('resize',()=>{
-  if(window.innerWidth > 960) closeMob();
-});
+/* ══════════════════════
+   RESIZE
+══════════════════════ */
+window.addEventListener('resize',()=>{ if(window.innerWidth>960) closeMob(); });
 
-/* ───────── INIT ───────── */
+/* ══════════════════════
+   INIT
+══════════════════════ */
 renderProds('all');
-updateNavActive();
+updateActive();
 </script>
 </body>
 </html>
